@@ -3,39 +3,35 @@
 VERSION="0.9.1"
 UPDATE_URL="http://scriptsrv01.pama.home/linux/update/"
 INSTALL_URL="http://scriptsrv01.pama.home/linux/install/"
-SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/script.sh?token=GHSAT0AAAAAACO3HFWCYMKJGXFD5A57TGGCZO7ILVQ"
+SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/script.sh"
 INSTALL_PATH="install"
 UPDATE_PATH="update"
 BACKUP_PATH="backup"
 
-# auto update function
-if [ -f scripts.sh.update ]                                             # checks if an old update is present
-then
-    rm scripts.sh.update                                                # deletes the old update
-fi
+function update_script() {
 
-# download the new script and makes it executable
-wget -O scripts.sh.update $SCRIPT_URL && chmod +x scripts.sh.update    
-
-
-if grep -q "VERSION=\"$VERSION\"" scripts.sh.update                     # checks if the version number is different
-then
-    echo "No update needed"                                             # Version number is the same
-else
-    whiptail --title "Script update" --yesno "An update was found, you are on Version $VERSION. Do you want to update this script?" 10 60
-    if [ $? -eq 0 ]
-    then
+    wget -O scripts.sh.update $SCRIPT_URL && chmod +x scripts.sh.update     # download the script again and makes it executable
+    if grep -q "VERSION=\"$VERSION\"" scripts.sh.update                     # checks if the version number is the same
+    then                                                                    # Version number is the same
+        rm scripts.sh.update                                                # deletes the downloaded version again
+        echo "No update needed"                                             
+    else                                                                    # Version is different
+        whiptail --title "Script update" --yesno "An update was found, you are on Version $VERSION. Do you want to update this script?" 10 60
+        if [ $? -eq 0 ]                                                     # "yes" has been choosen
+        then
                 echo "Updating"
                 rm scripts.sh
                 mv scripts.sh.update scripts.sh
                 whiptail --title "Script update" --msgbox "Script has been updated successfully" 10 60
                 exec ./scripts.sh
-    else
+        else                                                                # "no" has been choosen
+                rm scripts.sh.update
                 whiptail --title "Script update" --msgbox "Script has not been updated, you are still on Version $VERSION" 10 60
+        fi
     fi
-fi
-# End auto update function
+}
 
+update_script
 
 # Check for dependencies
 command -v whiptail >/dev/null 2>&1 || { 
