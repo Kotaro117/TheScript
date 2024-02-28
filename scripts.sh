@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.9.2"
+VERSION="0.9.2.1"
 UPDATE_URL="http://scriptsrv01.pama.home/linux/update/"
 INSTALL_URL="http://scriptsrv01.pama.home/linux/install/"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
@@ -11,7 +11,7 @@ BACKUP_PATH="backup"
 function update_script() {
 
     wget -O scripts.sh.update $SCRIPT_URL && chmod +x scripts.sh.update         # download the script again and makes it executable
-    if [ -f scripts.sh.update ]                                                 # checks if download was successful
+    if [ $? -eq 0 ]                                                             # checks if download was successful
     then
         if grep -q "VERSION=\"$VERSION\"" scripts.sh.update                     # checks if the version number is the same
         then                                                                    # Version number is the same
