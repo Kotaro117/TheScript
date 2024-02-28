@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.9.2.3"
+VERSION="0.9.2.4"
 UPDATE_URL="http://scriptsrv01.pama.home/linux/update/"
 INSTALL_URL="http://scriptsrv01.pama.home/linux/install/"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
@@ -27,6 +27,7 @@ function update_script() {
                 whiptail --title "Script update" --msgbox "Script has been updated successfully" 10 60
                 exec ./scripts.sh                                               # exits current scripts and run updated version
             else                                                                # "no" has been choosen
+                echo "User has choosen to not update the script"
                 rm scripts.sh.update
                 whiptail --title "Script update" --msgbox "Script has not been updated, you are still on Version $VERSION" 10 60
             fi
