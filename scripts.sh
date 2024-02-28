@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.9.2.2"
+VERSION="0.9.2.3"
 UPDATE_URL="http://scriptsrv01.pama.home/linux/update/"
 INSTALL_URL="http://scriptsrv01.pama.home/linux/install/"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
@@ -145,6 +145,7 @@ function advancedMenu() {
             if [ $? -eq 0 ]
             then
                 update_script
+                exec ./scripts.sh
             else
                 whiptail --title "Script update" --msgbox "Script has not been updated" 9 60
                 ./scripts.sh
