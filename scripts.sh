@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.9.2.1"
+VERSION="0.9.2.2"
 UPDATE_URL="http://scriptsrv01.pama.home/linux/update/"
 INSTALL_URL="http://scriptsrv01.pama.home/linux/install/"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
@@ -31,6 +31,8 @@ function update_script() {
                 whiptail --title "Script update" --msgbox "Script has not been updated, you are still on Version $VERSION" 10 60
             fi
         fi
+    else                                                                        # Download was not successful
+        echo "Error downloading the update"                                     
     fi
 }
 
@@ -139,16 +141,12 @@ function advancedMenu() {
             ;;
         9)  
             echo "Do you want to update this script?"
-            whiptail --title "Script update" --yesno "Do you want to update this script?" 10 60
-            if [ $? -eq 0 ]; then
-                echo "Updating"
-                mv scripts.sh scripts.sh.OLD
-                wget - O scripts.sh $SCRIPT_URL
-                chmod +x scripts.sh
-                whiptail --title "Script update" --msgbox "Script has been updated successfully" 8 40
-                ./scripts.sh
+            whiptail --title "Script update" --yesno "Do you want to update this script?" 9 60
+            if [ $? -eq 0 ]
+            then
+                update_script
             else
-                whiptail --title "Script update" --msgbox "Script has not been updated" 8 35
+                whiptail --title "Script update" --msgbox "Script has not been updated" 9 60
                 ./scripts.sh
             fi
             ;;
