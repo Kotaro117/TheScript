@@ -7,7 +7,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 
-VERSION="2.7.3"
+VERSION="2.7.4"
 RELEASE_FILE="/etc/os-release"
 
 function exit_code() {
@@ -25,17 +25,15 @@ if grep -q "Arch" $RELEASE_FILE
 then
     # The host is based on Arch, run the pacman update command
     sudo pacman -Syu
-    exit_code
-else
+    exit_code                                                               # Checks if the update was successful
+elif
     echo -e "${YELLOW}Host is not based on Arch ${NC}"
-fi
-
-if grep -q "Debian" $RELEASE_FILE || grep -q "Ubuntu" $RELEASE_FILE || grep -q "Pop" $RELEASE_FILE # "||"=or
+    grep -q "Debian" $RELEASE_FILE || grep -q "Ubuntu" $RELEASE_FILE || grep -q "Pop" $RELEASE_FILE # "||"=or
 then
     # The host is based on Debian, Ubuntu or Pop
     # Run the apt version of the command
     sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
-    exit_code
+    exit_code                                                               # Checks if the update was successful
 else
     echo -e "${YELLOW}Host is not based on Debian ${NC}"
 fi
