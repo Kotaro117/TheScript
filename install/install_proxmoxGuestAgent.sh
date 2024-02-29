@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.10"
+VERSION="1"
 PACKAGE_NAME="qemu-guest-agent"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
