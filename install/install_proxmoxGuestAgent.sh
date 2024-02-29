@@ -22,15 +22,14 @@ function exit_code() {
 echo -e "${YELLOW}running Version $VERSION of the script $TIME_STAMP ${NC}"
 
 # Install Proxmox guest agent
-COMMAND="Installatiom of the Proxmox guest agent"
-if  dpkg -s "$PACKAGE_NAME" | grep "Status: install ok installed"
+COMMAND="Installation of the Proxmox guest agent"
+if  dpkg -s "$PACKAGE_NAME" | grep "Status: install ok installed"               # Checks if the guest agent is installed 
 then
     echo -e "${YELLOW}$PACKAGE_NAME is allready installed $TIME_STAMP ${NC}"
 else
     sudo apt-get install -y $PACKAGE_NAME
     exit_code
 fi
-
 
 # Start the agent
 COMMAND="Starting of the agent"
