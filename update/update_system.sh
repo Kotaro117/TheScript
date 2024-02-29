@@ -7,7 +7,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 
-VERSION="2.7.2"
+VERSION="2.7.3"
 RELEASE_FILE="/etc/os-release"
 
 function exit_code() {
@@ -15,7 +15,7 @@ function exit_code() {
     then
         echo -e "${GREEN}Update was successful ${NC}"
     else
-        echo "${RED}Update was not successful ${NC}"
+        echo -e "${RED}Update was not successful ${NC}"
     fi
 }
 
