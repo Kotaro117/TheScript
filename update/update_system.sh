@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="2.7.7"
+VERSION="2.7.8"
 RELEASE_FILE="/etc/os-release"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -19,7 +19,7 @@ function exit_code() {
     fi
 }
 
-echo -e "${YELLOW}running Version $VERSION $TIME_STAMP ${NC}"
+echo -e "${YELLOW}running Version $VERSION of the script $TIME_STAMP ${NC}"
 
 if grep -q "Arch" $RELEASE_FILE
 then
