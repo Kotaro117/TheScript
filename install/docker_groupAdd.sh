@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="3"
+VERSION="3.1"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -11,9 +11,9 @@ NC='\033[0m' # No Colour
 function exit_code() {
     if [ $? -eq 0 ]
     then
-        echo -e "${GREEN}User has been added to the Docker group. Please log out and log back in for the changes to take effect. $TIME_STAMP ${NC}"
+        echo -e "${GREEN}User <$USER> has been added to the Docker group. Please log out and log back in for the changes to take effect. $TIME_STAMP ${NC}"
     else
-        echo -e "${RED}User has NOT been added to the Docker group. $TIME_STAMP ${NC}"
+        echo -e "${RED}User <$USER> has NOT been added to the Docker group. $TIME_STAMP ${NC}"
     fi
 }
 
