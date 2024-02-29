@@ -7,7 +7,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 
-VERSION="2.7.1"
+VERSION="2.7.2"
 RELEASE_FILE="/etc/os-release"
 
 function exit_code() {
@@ -39,7 +39,3 @@ then
 else
     echo -e "${YELLOW}Host is not based on Debian ${NC}"
 fi
-
-
-
-echo -e "$GREEN Update was successful $NC"
