@@ -1,2 +1,5 @@
 .DS_Store
 old_script.sh
+.stignore
+.stfolder
+desktop.ini
