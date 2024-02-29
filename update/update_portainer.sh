@@ -1,7 +1,6 @@
 #!/bin/bash
 
-VERSION="1.1"
-RELEASE_FILE="/etc/os-release"
+VERSION="2"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -22,21 +21,21 @@ function exit_code() {
 echo -e "${YELLOW}running Version $VERSION of the script $TIME_STAMP ${NC}"
 
 # Stop Portainer
-COMMAND="stop Portainer"
+COMMAND="Stopping of Portainer"
 sudo docker stop portainer
 exit_code
 
 # Remove Portainer container
-COMMAND="remove Portainer container"
+COMMAND="Removing of the Portainer container"
 sudo docker rm portainer
 exit_code
 
 # Download the latest image of Portainer
-COMMAND="Download the latest image of Portainer"
+COMMAND="Download of the latest image of Portainer"
 sudo docker pull portainer/portainer-ce:latest
 exit_code
 
 # Deploy updated version of Portainer
-COMMAND="Deploy updated version of Portainer"
+COMMAND="Deploying of the updated version of Portainer"
 sudo docker run -d -p 8000:8000 -p 9443:9443 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
 exit_code
