@@ -7,7 +7,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 
-VERSION="2.7"
+VERSION="2.7.1"
 RELEASE_FILE="/etc/os-release"
 
 function exit_code() {
@@ -19,7 +19,7 @@ function exit_code() {
     fi
 }
 
-echo "${YELLOW}running Version $VERSION ${NC}"
+echo -e "${YELLOW}running Version $VERSION ${NC}"
 
 if grep -q "Arch" $RELEASE_FILE
 then
@@ -27,7 +27,7 @@ then
     sudo pacman -Syu
     exit_code
 else
-    echo "${YELLOW}Host is not based on Arch ${NC}"
+    echo -e "${YELLOW}Host is not based on Arch ${NC}"
 fi
 
 if grep -q "Debian" $RELEASE_FILE || grep -q "Ubuntu" $RELEASE_FILE || grep -q "Pop" $RELEASE_FILE # "||"=or
@@ -37,7 +37,7 @@ then
     sudo apt update && sudo apt upgrade -y && sudo apt autoremove -y
     exit_code
 else
-    echo "${YELLOW}Host is not based on Debian ${NC}"
+    echo -e "${YELLOW}Host is not based on Debian ${NC}"
 fi
 
 
