@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.9.3"
+VERSION="0.9.4"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 INSTALL_PATH="install"
 UPDATE_PATH="update"
@@ -19,7 +19,7 @@ function update_script() {
         if grep -q "VERSION=\"$VERSION\"" scripts.sh.update                     # checks if the version number is the same
         then                                                                    # Version number is the same
             rm scripts.sh.update                                                # deletes the downloaded version again
-            echo -e "${YELLOW}No update needed $TIME_STAMP ${NC}"                                             
+            echo -e "${YELLOW}No update needed you're running Version $VERSION $TIME_STAMP ${NC}"                                             
         else                                                                    # Version is different
             whiptail --title "Script update" --yesno "An update was found, you are on Version $VERSION. Do you want to update this script?" 10 60
             if [ $? -eq 0 ]                                                     # "yes" has been choosen
@@ -66,13 +66,8 @@ command -v wget >/dev/null 2>&1 || {        # checks for wget
 } 
 
 function download() {
-    if [ ! -d $SCRIPT_TYPE ]
-    then
-        echo -e "${YELLOW}Folder $SCRIPT_TYPE it not present $TIME_STAMP ${NC}"      
-        mkdir $SCRIPT_TYPE
-        echo -e "${YELLOW}Folder $SCRIPT_TYPE has been created $TIME_STAMP ${NC}"
-    fi
-    
+    mkdir -p $SCRIPT_TYPE
+
     if [ ! -f $SCRIPT_TYPE/$SCRIPT ]        # checks if update script is not present  
     then
         wget -O "$SCRIPT_TYPE/$SCRIPT" https://raw.githubusercontent.com/Kotaro117/TheScript/main/$SCRIPT_TYPE/$SCRIPT
@@ -145,7 +140,6 @@ function advancedMenu() {
             whiptail --title "Syncthing install" --msgbox "Syncthing installed successfully" 8 40
             ;;
         8)  
-            echo "Are you sure you want to delete everything?"
             whiptail --title "Delete Script" --yesno "Are you sure you want to delete everything?" 10 60
             if [ $? -eq 0 ]
             then
@@ -157,7 +151,6 @@ function advancedMenu() {
             fi
             ;;
         9)  
-            echo "Do you want to update this script?"
             whiptail --title "Script update" --yesno "Do you want to update this script?" 9 60
             if [ $? -eq 0 ]
             then
