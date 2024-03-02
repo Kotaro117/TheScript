@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.9.6"
+VERSION="0.9.7"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -83,8 +83,6 @@ function advancedMenu() {
                 whiptail --title "Install Docker" --msgbox "Docker is allready installed" 8 60
                 echo -e "${YELLOW} Docker is allready installed $TIME_STAMP ${NC}"
                 $SCRIPT_TYPE/./docker_groupAdd.sh
-                $SCRIPT_TYPE/./docker_groupAdd.sh 
-
             else
                 download
                 whiptail --title "Docker install" --msgbox "Docker installed successfully" 8 40
@@ -148,7 +146,7 @@ function advancedMenu() {
 
 function check_dependency() {                                                   # Check for dependencies
     command -v $1 >/dev/null 2>&1 || {
-        echo "$1 is required but not installed. Would you like to install it?"
+        echo -e "${RED}$1 is required but not installed. Would you like to install it? $TIME_STAMP ${NC}"
         read -p "Install $1? (y/n): " answer
         if [ "$answer" == "y" ] 
         then

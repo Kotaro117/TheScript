@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="2.1"
+VERSION="2.2"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -20,7 +20,7 @@ function exit_code() {
 
 function check_dependency() {                                                   # Check for dependencies
     command -v $1 >/dev/null 2>&1 || {
-        echo "$1 is required but not installed. Would you like to install it?"
+        echo -e "${RED}$1 is required but not installed. Would you like to install it $TIME_STAMP ${NC}?"
         read -p "Install $1? (y/n): " answer
         if [ "$answer" == "y" ] 
         then
