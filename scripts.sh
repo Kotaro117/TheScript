@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.9.5"
+VERSION="0.9.5.1"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -21,7 +21,7 @@ function update_script() {
             whiptail --title "Script update" --yesno "An update was found, you are on Version $VERSION. Do you want to update this script?" 10 60
             if [ $? -eq 0 ]                                                     # "yes" has been choosen
             then
-                echo "Updating"
+                echo -e "${YELLOW}Updating $TIME_STAMP ${NC}"
                 rm scripts.sh
                 mv scripts.sh.update scripts.sh
                 whiptail --title "Script update" --msgbox "Script has been updated successfully" 10 60
@@ -137,7 +137,7 @@ function advancedMenu() {
     esac
 }
 
-function check_dependency() {               # Check for dependencies
+function check_dependency() {                                                   # Check for dependencies
     command -v $1 >/dev/null 2>&1 || {
         echo "$1 is required but not installed. Would you like to install it?"
         read -p "Install $1? (y/n): " answer

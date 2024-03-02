@@ -1,25 +1,35 @@
 #!/bin/bash
 
-# V 2.6
-
+VERSION="2.7"
+TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
+# Define colour codes
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Colour
 INSATALL_PATH="install"
 
-# Check for dependencies (Whiptail)
-command -v whiptail >/dev/null 2>&1 || { 
-    echo >&2 "whiptail is required but not installed. Would you like to install it?";
-    read -p "Install whiptail? (y/n): " answer
-        if [ "$answer" == "y" ]; then
-        sudo apt-get update
-        sudo apt-get install -y whiptail
-    else
-        echo "Aborting."
-        exit 1
-    fi
+function check_dependency() {
+    command -v $1 >/dev/null 2>&1 || {
+        echo "$1 is required but not installed. Would you like to install it?"
+        read -p "Install $1? (y/n): " answer
+        if [ "$answer" == "y" ] 
+        then
+            sudo apt-get install -y $1
+        else
+            echo "Aborting"
+            exit 1
+        fi
+    }
 }
+
+# Check for dependencies (Whiptail)
+check_dependency whiptail
 
 if command -v docker
 then
     whiptail --title "Install Docker" --msgbox "Docker is allready installed" 8 60
+    echo -e "${YELLOW} Docker is allready installed $TIME_STAMP ${NC}"
     $INSATALL_PATH/./docker_groupAdd.sh 
 else
     # Uninstall all conflicting packages
@@ -40,7 +50,7 @@ else
     # Install the latest Docker packages
     sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-     Verify that the Docker Engine installation is successful by running the hello-world image.
+    # Verify that the Docker Engine installation is successful by running the hello-world image.
     sudo docker run hello-world
 
     # Add user to the docker group

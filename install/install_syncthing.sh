@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="2"
+VERSION="2.1"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -18,12 +18,23 @@ function exit_code() {
     fi
 }
 
+function check_dependency() {                                                   # Check for dependencies
+    command -v $1 >/dev/null 2>&1 || {
+        echo "$1 is required but not installed. Would you like to install it?"
+        read -p "Install $1? (y/n): " answer
+        if [ "$answer" == "y" ] 
+        then
+            sudo apt-get update && sudo apt-get install -y $1
+        else
+            echo "Aborting"
+            exit 1
+        fi
+    }
+}
+
 echo -e "${YELLOW}running Version $VERSION of the script $TIME_STAMP ${NC}"
 
-# Install dependencies
-COMMAND="Insalling of the dependecies"
-sudo apt install -y curl
-exit_code
+check_dependency curl
 
 # Add the release PGP keys:
 COMMAND="Adding of the relase PGP keys"
