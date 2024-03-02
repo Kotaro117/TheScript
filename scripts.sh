@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.9.8"
+VERSION="0.9.9.1"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -16,7 +16,7 @@ function update_script() {
         if grep -q "VERSION=\"$VERSION\"" scripts.sh.update                     # checks if the version number is the same
         then                                                                    # Version number is the same
             rm scripts.sh.update                                                # deletes the downloaded version again
-            echo -e "${YELLOW}No update needed you're running Version $VERSION $TIME_STAMP ${NC}"                                             
+            echo -e "${YELLOW}No update of this script needed you're running Version $VERSION $TIME_STAMP ${NC}"                                             
         else                                                                    # Version is different
             whiptail --title "Script update" --yesno "An update was found, you are on Version $VERSION. Do you want to update this script?" 10 60
             if [ $? -eq 0 ]                                                     # "yes" has been choosen
@@ -158,7 +158,7 @@ function check_dependency() {                                                   
     }
 }
 
-function check_sudo() {                                                         # Check for dependencies
+function check_sudo() {                                                         # Check for sudo (if used inside a docker container)
     command -v sudo >/dev/null 2>&1 || {
         echo -e "${RED}sudo is required but not installed. Would you like to install it? $TIME_STAMP ${NC}"
         read -p "Install sudo? (y/n): " answer
