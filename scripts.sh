@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.9.5.1"
+VERSION="0.9.6"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -75,11 +75,20 @@ function advancedMenu() {
             whiptail --title "Proxmox guest agent" --msgbox "Proxmox guest agent installed and enabled" 8 50
             ;;
         3)
-            echo "Installing Docker"
+            echo -e "${YELLOW}Installing Docker $TIME_STAMP ${NC}"
             SCRIPT=install_docker.sh
             SCRIPT_TYPE="install"
-            download
-            whiptail --title "Docker install" --msgbox "Docker installed successfully" 8 40
+            if command -v docker
+            then
+                whiptail --title "Install Docker" --msgbox "Docker is allready installed" 8 60
+                echo -e "${YELLOW} Docker is allready installed $TIME_STAMP ${NC}"
+                $SCRIPT_TYPE/./docker_groupAdd.sh
+                $SCRIPT_TYPE/./docker_groupAdd.sh 
+
+            else
+                download
+                whiptail --title "Docker install" --msgbox "Docker installed successfully" 8 40
+            fi
             ;;
         4)
             echo "Deploying Portainer"

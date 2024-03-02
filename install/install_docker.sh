@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="2.7"
+VERSION="2.7.1"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -28,7 +28,6 @@ check_dependency whiptail
 
 if command -v docker
 then
-    whiptail --title "Install Docker" --msgbox "Docker is allready installed" 8 60
     echo -e "${YELLOW} Docker is allready installed $TIME_STAMP ${NC}"
     $INSATALL_PATH/./docker_groupAdd.sh 
 else
