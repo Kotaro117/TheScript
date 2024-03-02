@@ -1,10 +1,7 @@
 #!/bin/bash
 
-VERSION="0.9.4"
+VERSION="0.9.5"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
-INSTALL_PATH="install"
-UPDATE_PATH="update"
-BACKUP_PATH="backup"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -40,38 +37,11 @@ function update_script() {
     fi
 }
 
-update_script
-
-# Check for dependencies
-command -v whiptail >/dev/null 2>&1 || {    # checks for whiptail
-    echo >&2 "whiptail is required but not installed. Would you like to install it?";
-    read -p "Install whiptail? (y/n): " answer
-        if [ "$answer" == "y" ]; then
-        sudo apt-get update
-        sudo apt-get install -y whiptail
-    else
-        echo "Aborting."
-        exit 1
-    fi
-} 
-command -v wget >/dev/null 2>&1 || {        # checks for wget
-    if whiptail --title "Install wget?" --yesno "wget is required but not installed. Would you like to install it?" 10 60
-    then
-        sudo apt-get update
-        sudo apt-get install -y wget
-    else
-        echo "Aborting.";
-        exit 1;
-    fi
-} 
-
 function download() {
-    mkdir -p $SCRIPT_TYPE
-
-    if [ ! -f $SCRIPT_TYPE/$SCRIPT ]        # checks if update script is not present  
+    mkdir -p $SCRIPT_TYPE                   # creates the necessary folder if it's not allready present
+    if [ ! -f $SCRIPT_TYPE/$SCRIPT ]        # checks if the update script is not present  
     then
-        wget -O "$SCRIPT_TYPE/$SCRIPT" https://raw.githubusercontent.com/Kotaro117/TheScript/main/$SCRIPT_TYPE/$SCRIPT
-        chmod +x $SCRIPT_TYPE/$SCRIPT
+        wget -O "$SCRIPT_TYPE/$SCRIPT" https://raw.githubusercontent.com/Kotaro117/TheScript/main/$SCRIPT_TYPE/$SCRIPT && chmod +x $SCRIPT_TYPE/$SCRIPT
     fi
     $SCRIPT_TYPE/./$SCRIPT
 }
@@ -167,4 +137,21 @@ function advancedMenu() {
     esac
 }
 
+function check_dependency() {               # Check for dependencies
+    command -v $1 >/dev/null 2>&1 || {
+        echo "$1 is required but not installed. Would you like to install it?"
+        read -p "Install $1? (y/n): " answer
+        if [ "$answer" == "y" ] 
+        then
+            sudo apt-get update && sudo apt-get install -y $1
+        else
+            echo "Aborting"
+            exit 1
+        fi
+    }
+}
+
+check_dependency wget
+update_script
+check_dependency whiptail
 advancedMenu
