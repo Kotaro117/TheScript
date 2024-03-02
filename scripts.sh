@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.9.7"
+VERSION="0.9.8"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -158,6 +158,21 @@ function check_dependency() {                                                   
     }
 }
 
+function check_sudo() {                                                         # Check for dependencies
+    command -v sudo >/dev/null 2>&1 || {
+        echo -e "${RED}sudo is required but not installed. Would you like to install it? $TIME_STAMP ${NC}"
+        read -p "Install sudo? (y/n): " answer
+        if [ "$answer" == "y" ] 
+        then
+            apt-get update && apt-get install -y sudo
+        else
+            echo "Aborting"
+            exit 1
+        fi
+    }
+}
+
+check_sudo
 check_dependency wget
 update_script
 check_dependency whiptail
