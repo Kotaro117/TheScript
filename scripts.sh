@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.9.11"
+VERSION="0.9.12"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -11,7 +11,7 @@ NC='\033[0m' # No Colour
 
 
 function update_script() {
-    if [ "$(curl -s https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh | grep -oP 'VERSION="\K[^"]+')" = "$VERSION" ]
+    if [ ! "$(curl -s https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh | grep -oP 'VERSION="\K[^"]+')" = "$VERSION" ]
     then
         echo -e "${YELLOW}No update of this script needed you're running Version $VERSION $TIME_STAMP ${NC}"
     else
