@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.9.12"
+VERSION="0.9.12.1"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -34,7 +34,6 @@ function update_script() {
             whiptail --title "Script update" --msgbox "Script has not been updated, you are still on Version $VERSION" 10 60
         fi
     fi
-
 }
 
 function download() {
