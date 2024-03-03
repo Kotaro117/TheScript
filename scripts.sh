@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.9.12.1"
+VERSION="0.9.12.2"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -11,16 +11,17 @@ NC='\033[0m' # No Colour
 
 
 function update_script() {
-    if [ ! "$(curl -s https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh | grep -oP 'VERSION="\K[^"]+')" = "$VERSION" ]
+    if [ "$(curl -s https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh | grep -oP 'VERSION="\K[^"]+')" != "$VERSION" ]
     then
         echo -e "${YELLOW}No update of this script needed you're running Version $VERSION $TIME_STAMP ${NC}"
     else
         whiptail --title "Script update" --yesno "An update was found, you are on Version $VERSION. Do you want to update this script?" 10 60
         if [ $? -eq 0 ]
         then
-            wget -O scripts.sh.update $SCRIPT_URL && chmod +x scripts.sh.update         # download the script again and makes it executable
+            wget -O scripts.sh.update $SCRIPT_URL                                       # downloads the script
             if [ $? -eq 0 ]                                                             # checks if download was successful
             then
+                chmod +x scripts.sh.update
                 echo -e "${YELLOW}Updating $TIME_STAMP ${NC}"
                 rm scripts.sh
                 mv scripts.sh.update scripts.sh
