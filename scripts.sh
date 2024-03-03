@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.9.10"
+VERSION="0.9.11"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -173,6 +173,7 @@ function check_sudo() {                                                         
 }
 
 check_sudo
+check_dependency curl
 check_dependency wget
 update_script
 check_dependency whiptail
