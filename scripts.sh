@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.9.9.1"
+VERSION="0.9.10"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -9,32 +9,32 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Colour
 
+
 function update_script() {
-    wget -O scripts.sh.update $SCRIPT_URL && chmod +x scripts.sh.update         # download the script again and makes it executable
-    if [ $? -eq 0 ]                                                             # checks if download was successful
+    if [ "$(curl -s https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh | grep -oP 'VERSION="\K[^"]+')" = "$VERSION" ]
     then
-        if grep -q "VERSION=\"$VERSION\"" scripts.sh.update                     # checks if the version number is the same
-        then                                                                    # Version number is the same
-            rm scripts.sh.update                                                # deletes the downloaded version again
-            echo -e "${YELLOW}No update of this script needed you're running Version $VERSION $TIME_STAMP ${NC}"                                             
-        else                                                                    # Version is different
-            whiptail --title "Script update" --yesno "An update was found, you are on Version $VERSION. Do you want to update this script?" 10 60
-            if [ $? -eq 0 ]                                                     # "yes" has been choosen
+        echo -e "${YELLOW}No update of this script needed you're running Version $VERSION $TIME_STAMP ${NC}"
+    else
+        whiptail --title "Script update" --yesno "An update was found, you are on Version $VERSION. Do you want to update this script?" 10 60
+        if [ $? -eq 0 ]
+        then
+            wget -O scripts.sh.update $SCRIPT_URL && chmod +x scripts.sh.update         # download the script again and makes it executable
+            if [ $? -eq 0 ]                                                             # checks if download was successful
             then
                 echo -e "${YELLOW}Updating $TIME_STAMP ${NC}"
                 rm scripts.sh
                 mv scripts.sh.update scripts.sh
                 whiptail --title "Script update" --msgbox "Script has been updated successfully" 10 60
-                exec ./scripts.sh                                               # exits current scripts and run updated version
-            else                                                                # "no" has been choosen
-                echo -e "${YELLOW}User has choosen not to update the script $TIME_STAMP ${NC}"
-                rm scripts.sh.update
-                whiptail --title "Script update" --msgbox "Script has not been updated, you are still on Version $VERSION" 10 60
-            fi
+                exec ./scripts.sh                                                       # exits current scripts and run updated version
+            else
+                echo -e "${RED}Error downloading the update $TIME_STAMP ${NC}"                                    
+            fi                                                      
+        else                                                                               # "no" has been choosen
+            echo -e "${YELLOW}User has choosen not to update the script $TIME_STAMP ${NC}"
+            whiptail --title "Script update" --msgbox "Script has not been updated, you are still on Version $VERSION" 10 60
         fi
-    else                                                                        # Download was not successful
-        echo -e "${RED}Error downloading the update $TIME_STAMP ${NC}"                                    
     fi
+
 }
 
 function download() {
