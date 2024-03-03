@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="2.3.1"
+VERSION="2.3.2"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -45,7 +45,7 @@ sudo apt-get update
 # Configure repositories
 curl -o setup-repos.sh https://raw.githubusercontent.com/webmin/webmin/master/setup-repos.sh 
 chmod +x setup-repos.sh
-sudo sh setup-repos.sh
+echo "y" | sudo sh setup-repos.sh
 rm setup-repos.sh
 
 # Install Webmin
