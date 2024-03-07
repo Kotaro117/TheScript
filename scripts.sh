@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.9.12.2"
+VERSION="0.9.13"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -10,7 +10,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Colour
 
 
-function update_script() {
+function update_script_new() {
     if [ "$(curl -s https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh | grep -oP 'VERSION="\K[^"]+')" != "$VERSION" ]
     then
         echo -e "${YELLOW}No update of this script needed you're running Version $VERSION $TIME_STAMP ${NC}"
@@ -34,6 +34,35 @@ function update_script() {
             echo -e "${YELLOW}User has choosen not to update the script $TIME_STAMP ${NC}"
             whiptail --title "Script update" --msgbox "Script has not been updated, you are still on Version $VERSION" 10 60
         fi
+    fi
+}
+
+function update_script_old() {
+    wget -O scripts.sh.update $SCRIPT_URL                                       # download the script again
+    if [ $? -eq 0 ]                                                             # check if download was successful
+    then
+        if grep -q "VERSION=\"$VERSION\"" scripts.sh.update                     # check if the version number is the same
+        then                                                                    # Version number is the same
+            rm scripts.sh.update                                                # deletes the downloaded version again
+            echo -e "${YELLOW}No update of this script needed you're running Version $VERSION $TIME_STAMP ${NC}"                                             
+        else                                                                    # Version is different
+            whiptail --title "Script update" --yesno "An update was found, you are on Version $VERSION. Do you want to update this script?" 10 60
+            if [ $? -eq 0 ]                                                     # "yes" has been choosen
+            then
+                chmod +x scripts.sh.update                                      # make the script executeable
+                echo -e "${YELLOW}Updating $TIME_STAMP ${NC}"
+                rm scripts.sh                                                   # remove the old script
+                mv scripts.sh.update scripts.sh                                 # rename the new script
+                whiptail --title "Script update" --msgbox "Script has been updated successfully" 10 60
+                exec ./scripts.sh                                               # exits current scripts and run updated version
+            else                                                                # "no" has been choosen
+                echo -e "${YELLOW}User has choosen not to update the script $TIME_STAMP ${NC}"
+                rm scripts.sh.update
+                whiptail --title "Script update" --msgbox "Script has not been updated, you are still on Version $VERSION" 10 60
+            fi
+        fi
+    else                                                                        # Download was not successful
+        echo -e "${RED}Error downloading the update $TIME_STAMP ${NC}" 
     fi
 }
 
@@ -173,8 +202,8 @@ function check_sudo() {                                                         
 }
 
 check_sudo
-check_dependency curl
+#check_dependency curl
 check_dependency wget
-update_script
+update_script_old
 check_dependency whiptail
 advancedMenu
