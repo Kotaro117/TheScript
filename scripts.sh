@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.9.13"
+VERSION="0.9.14"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -84,7 +84,7 @@ function advancedMenu() {
         "4" "Deploy Portainer" \
         "5" "Update Portainer" \
         "6" "Setup Webmin repos and install it (Debian)" \
-        "7" "Install Syncthing (BETA)" \
+        "7" "Mount a SMB drive" \
         "8" "Delete this script" \
         "9" "Update this script" 3>&1 1>&2 2>&3)
 
@@ -139,17 +139,19 @@ function advancedMenu() {
             whiptail --title "Webmin install" --msgbox "Webmin installed successfully" 8 35
             ;;
         7)  
-            echo "Installing Syncthing"
-            SCRIPT=install_syncthing.sh
-            SCRIPT_TYPE="install"
+            echo "Mounting smb drive"
+            SCRIPT=mountSMB.sh
+            SCRIPT_TYPE="update"
             download
-            whiptail --title "Syncthing install" --msgbox "Syncthing installed successfully" 8 40
+            whiptail --title "Mounting drive" --msgbox "Drive mounted successfull" 8 40
             ;;
         8)  
             whiptail --title "Delete Script" --yesno "Are you sure you want to delete everything?" 10 60
             if [ $? -eq 0 ]
             then
                 echo -e "${RED}Deleting everything $TIME_STAMP ${NC}"
+                rm -R update/ install/ scripts.sh
+                echo -e "${GREEN}All files have been deleted $TIME_STAMP ${NC}"
             else
                 whiptail --title "Delete Script" --msgbox "Script has not been deleted" 8 35
                 echo -e "${YELLOW}Deletion canceled $TIME_STAMP ${NC}"
@@ -201,9 +203,9 @@ function check_sudo() {                                                         
     }
 }
 
-check_sudo
-#check_dependency curl
-check_dependency wget
+check_sudo                                                                      # needed if the script is running inside a Docker container
+#check_dependency curl                                                          # only needed when the new update function works
+check_dependency wget                                                           # needed to download the scripts from GitHub
 update_script_old
-check_dependency whiptail
+check_dependency whiptail                                                       # needed fot the script GUI
 advancedMenu
