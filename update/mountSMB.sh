@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.7.5"
+VERSION="0.7.6"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -36,7 +36,7 @@ echo    # Add a newline after the password prompt
 read -p "Where do you want to mount the share?: " mount_point
 
 # Create a credentials file
-credentials_file="/root/.smbcredentials_$smb_user_$smb_share_$smb_host"
+credentials_file="/root/.smbcredentials_$smb_user"
 sudo touch $credentials_file
 echo "username=$smb_user" | sudo tee "$credentials_file" > /dev/null
 echo "password=$smb_password" | sudo tee -a "$credentials_file" > /dev/null
