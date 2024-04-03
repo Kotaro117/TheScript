@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.7.6"
+VERSION="0.7.7"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -26,8 +26,8 @@ then
 fi
 
 # Prompt user for SMB share details
-read -p "Enter the Windows SMB host: " smb_host
-read -p "Enter the SMB share name: " smb_share
+read -p "Enter the SMB host (e.g. 192.168.0.1): " smb_host
+read -p "Enter the SMB share name (e.g. install): " smb_share
 read -p "Enter your username: " smb_user
 read -s -p "Enter your password: " smb_password
 echo    # Add a newline after the password prompt
@@ -36,7 +36,7 @@ echo    # Add a newline after the password prompt
 read -p "Where do you want to mount the share?: " mount_point
 
 # Create a credentials file
-credentials_file="/root/.smbcredentials_$smb_user"
+credentials_file="/root/.smbcredentials_${smb_user}_${smb_host}_${smb_share}"
 sudo touch $credentials_file
 echo "username=$smb_user" | sudo tee "$credentials_file" > /dev/null
 echo "password=$smb_password" | sudo tee -a "$credentials_file" > /dev/null
