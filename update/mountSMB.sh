@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.7.4"
+VERSION="0.7.5"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -76,3 +76,7 @@ fi
 
 # reload systemd
 sudo systemctl daemon-reload
+
+# unmound and mount again to be ablte to write
+sudo umount $mount_point
+sudo mount $mount_point
