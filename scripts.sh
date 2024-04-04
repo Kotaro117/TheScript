@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.11.0"
+VERSION="0.11.1"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -8,7 +8,7 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Colour
-log=log/scripts.txt
+log=logs/scripts.txt
 
 mkdir -p logs # create log folder if not present
 echo "" >> $log # add a new line to make it easier to read

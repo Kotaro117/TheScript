@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.8.0"
+VERSION="0.8.1"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -73,7 +73,7 @@ sudo mount -t cifs //"$smb_host"/"$smb_share" "$mount_point" -o credentials="$cr
 # Check if the mount was successful
 if [ $? -eq 0 ]
 then
-    echo -e "${GREEN}SMB share mounted successfully at $mount_point $TIME_STAMP ${NC}"; echo "$TIME_STAMP ${GREEN}SMB share mounted successfully at $mount_point" >> logs/$log
+    echo -e "${GREEN}SMB share mounted successfully at $mount_point $TIME_STAMP ${NC}"; echo "$TIME_STAMP SMB share mounted successfully at $mount_point" >> logs/$log
 else
     echo -e "${RED}Failed to mount SMB share $TIME_STAMP ${NC}"; echo "$TIME_STAMP ERROR Failed to mount SMB share" >> logs/$log
 fi
