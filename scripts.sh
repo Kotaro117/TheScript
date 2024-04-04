@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.11.1"
+VERSION="0.11.2"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -12,6 +12,8 @@ log=logs/scripts.txt
 
 mkdir -p logs # create log folder if not present
 echo "" >> $log # add a new line to make it easier to read
+
+echo -e "${YELLOW}running Version $VERSION of the script $TIME_STAMP ${NC}"; echo "$TIME_STAMP running Version $VERSION of the script" >> $log
 
 function update_script_new() {
     if [ "$(curl -s https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh | grep -oP 'VERSION="\K[^"]+')" != "$VERSION" ]
