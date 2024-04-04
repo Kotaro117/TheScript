@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.1"
+VERSION="0.2"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -17,7 +17,7 @@ function exit_code() {
     fi
 }
 
-echo "Where is your CA certificate file stored? eg. /folder/file.crt"
+echo "Where is your CA certificate file stored? (eg. /folder/file.crt): "
     read CA_FILE
 COMMAND="Copie of the CA certificate"
 sudo cp $CA_FILE /usr/local/share/ca-certificates/
