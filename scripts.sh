@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.10.0"
+VERSION="0.11.0"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -8,7 +8,10 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Colour
+log=log/scripts.txt
 
+mkdir -p logs # create log folder if not present
+echo "" >> $log # add a new line to make it easier to read
 
 function update_script_new() {
     if [ "$(curl -s https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh | grep -oP 'VERSION="\K[^"]+')" != "$VERSION" ]
@@ -91,21 +94,23 @@ function advancedMenu() {
 
     case $ADVSEL in
         1)
-            echo "Updating system"
+            echo -e "${YELLOW}Updating system $TIME_STAMP ${NC}"
+            echo "$TIME_STAMP "System update" has been choosen" >> $log
             SCRIPT=update_system.sh
             SCRIPT_TYPE="update"
             download
             whiptail --title "System update" --msgbox "System updated successfully" 8 45
             ;;
         2)
-            echo "Updating CA certificate store"
+            echo -e "${YELLOW}Updating CA certificate store $TIME_STAMP ${NC}"
             SCRIPT=update_ca-cert-store.sh
             SCRIPT_TYPE="update"
             download
             whiptail --title "CA store update" --msgbox "CA certificate store has been updated successfully" 8 50
             ;;
         3)
-            echo "Installing Proxmox guest agent (Debian) and enabling autostart"
+            echo -e "${YELLOW}Installing Proxmox guest agent (Debian) and enabling autostart $TIME_STAMP ${NC}"
+            echo "$TIME_STAMP "Install Proxmox guest agent" has been choosen" >> $log
             SCRIPT=install_proxmoxGuestAgent.sh
             SCRIPT_TYPE="install"
             download
@@ -113,12 +118,14 @@ function advancedMenu() {
             ;;
         4)
             echo -e "${YELLOW}Installing Docker $TIME_STAMP ${NC}"
+            echo "$TIME_STAMP "Install Docker" has been choosen" >> $log
             SCRIPT=install_docker.sh
             SCRIPT_TYPE="install"
             if command -v docker
             then
                 whiptail --title "Install Docker" --msgbox "Docker is allready installed" 8 60
                 echo -e "${YELLOW} Docker is allready installed $TIME_STAMP ${NC}"
+                echo "$TIME_STAMP Docker is allready installed" >> $log
                 if [ ! -f $SCRIPT_TYPE/docker_groupAdd.sh ]
                 then
                     wget -O "$SCRIPT_TYPE/docker_groupAdd.sh" https://raw.githubusercontent.com/Kotaro117/TheScript/main/install/docker_groupAdd.sh && chmod +x $SCRIPT_TYPE/docker_groupAdd.sh
@@ -130,28 +137,32 @@ function advancedMenu() {
             fi
             ;;
         5)
-            echo "Deploying Portainer"
+            echo -e "${YELLOW} Deploying Portainer $TIME_STAMP ${NC}"
+            echo "$TIME_STAMP "Deploy Portainer" has been choosen" >> $log
             SCRIPT=deploy_portainer.sh
             SCRIPT_TYPE="install"
             download
             whiptail --title "Portainer deployment" --msgbox "Portainer deployed successfully" 8 45
             ;;
         6)
-            echo "Updating Portainer"
+            echo -e "${YELLOW} Updating Portainer $TIME_STAMP ${NC}"
+            echo "$TIME_STAMP "Update Portainer" has been choosen" >> $log
             SCRIPT=update_portainer.sh
             SCRIPT_TYPE="update"
             download
             whiptail --title "Portainer update" --msgbox "Portainer updated successfully" 8 40
             ;;
         7)
-            echo "Installing Webmin"
+            echo -e "${YELLOW} Installing Webmin $TIME_STAMP ${NC}"
+            echo "$TIME_STAMP "Install Webmin" has been choosen" >> $log
             SCRIPT=install_webmin.sh
             SCRIPT_TYPE="install"
             download
             whiptail --title "Webmin install" --msgbox "Webmin installed successfully" 8 35
             ;;
         8)  
-            echo "Mounting smb drive"
+            echo -e "${YELLOW} Mounting smb drive $TIME_STAMP ${NC}"
+            echo "$TIME_STAMP "Mounting smb drive" has been choosen" >> $log
             SCRIPT=mountSMB.sh
             SCRIPT_TYPE="update"
             download
@@ -159,14 +170,15 @@ function advancedMenu() {
             ;;
         9)  
             whiptail --title "Delete Script" --yesno "Are you sure you want to delete everything?" 10 60
+            echo "$TIME_STAMP "Delete script" has been choosen" >> $log
             if [ $? -eq 0 ]
             then
-                echo -e "${RED}Deleting everything $TIME_STAMP ${NC}"
+                echo -e "${RED}Deleting everything $TIME_STAMP ${NC}"; echo "$TIME_STAMP "yes" has been choosen" >> $log
                 rm -R update/ install/ scripts.sh
-                echo -e "${GREEN}All files have been deleted $TIME_STAMP ${NC}"
+                echo -e "${GREEN}All files have been deleted $TIME_STAMP ${NC}"; echo "$TIME_STAMP All files have been deleted" >> $log
             else
                 whiptail --title "Delete Script" --msgbox "Script has not been deleted" 8 35
-                echo -e "${YELLOW}Deletion canceled $TIME_STAMP ${NC}"
+                echo -e "${YELLOW}Deletion canceled $TIME_STAMP ${NC}"; echo "$TIME_STAMP Deletion canceled" >> $log
                 ./scripts.sh
             fi
             ;;
