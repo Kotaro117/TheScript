@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.9.15"
+VERSION="0.9.16"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -113,7 +113,7 @@ function advancedMenu() {
                 echo -e "${YELLOW} Docker is allready installed $TIME_STAMP ${NC}"
                 if [ ! -f $SCRIPT_TYPE/docker_groupAdd.sh ]
                 then
-                    wget -O "$SCRIPT_TYPE/docker_groupAdd.sh" https://raw.githubusercontent.com/Kotaro117/TheScript/main/install/docker_groupAdd.sh && chmod +x docker_groupAdd.sh
+                    wget -O "$SCRIPT_TYPE/docker_groupAdd.sh" https://raw.githubusercontent.com/Kotaro117/TheScript/main/install/docker_groupAdd.sh && chmod +x $SCRIPT_TYPE/docker_groupAdd.sh
                 fi
                 $SCRIPT_TYPE/./docker_groupAdd.sh
             else

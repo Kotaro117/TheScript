@@ -27,7 +27,7 @@ function check_dependency() {
 check_dependency whiptail
 if [ ! -f $INSATALL_PATH/docker_groupAdd.sh ]
 then
-    wget -O "$INSATALL_PATH/docker_groupAdd.sh" https://raw.githubusercontent.com/Kotaro117/TheScript/main/install/docker_groupAdd.sh && chmod +x docker_groupAdd.sh
+    wget -O "$INSATALL_PATH/docker_groupAdd.sh" https://raw.githubusercontent.com/Kotaro117/TheScript/main/install/docker_groupAdd.sh && chmod +x $INSATALL_PATH/docker_groupAdd.sh
 fi
 
 if command -v docker
