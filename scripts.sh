@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.9.16"
+VERSION="0.10.0"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -77,16 +77,17 @@ function download() {
 
 function advancedMenu() {
 
-    ADVSEL=$(whiptail --title "Menu Version $VERSION" --fb --menu "Select an option" 18 80 9 \
+    ADVSEL=$(whiptail --title "Menu Version $VERSION" --fb --menu "Select an option" 18 80 10 \
         "1" "Update your system" \
-        "2" "Install Proxmox guest agent (Debian), run it, and enable autostart" \
-        "3" "Install Docker (Ubuntu)" \
-        "4" "Deploy Portainer" \
-        "5" "Update Portainer" \
-        "6" "Setup Webmin repos and install it (Debian)" \
-        "7" "Mount a SMB drive" \
-        "8" "Delete this script" \
-        "9" "Update this script" 3>&1 1>&2 2>&3)
+        "2" "Update CA certificate store" \
+        "3" "Install Proxmox guest agent (Debian), run it, and enable autostart" \
+        "4" "Install Docker (Ubuntu)" \
+        "5" "Deploy Portainer" \
+        "6" "Update Portainer" \
+        "7" "Setup Webmin repos and install it (Debian)" \
+        "8" "Mount a SMB drive" \
+        "9" "Delete this script" \
+        "10" "Update this script" 3>&1 1>&2 2>&3)
 
     case $ADVSEL in
         1)
@@ -97,13 +98,20 @@ function advancedMenu() {
             whiptail --title "System update" --msgbox "System updated successfully" 8 45
             ;;
         2)
+            echo "Updating CA certificate store"
+            SCRIPT=update_ca-cert-store.sh
+            SCRIPT_TYPE="update"
+            download
+            whiptail --title "CA store update" --msgbox "CA certificate store has been updated successfully" 8 50
+            ;;
+        3)
             echo "Installing Proxmox guest agent (Debian) and enabling autostart"
             SCRIPT=install_proxmoxGuestAgent.sh
             SCRIPT_TYPE="install"
             download
             whiptail --title "Proxmox guest agent" --msgbox "Proxmox guest agent installed and enabled" 8 50
             ;;
-        3)
+        4)
             echo -e "${YELLOW}Installing Docker $TIME_STAMP ${NC}"
             SCRIPT=install_docker.sh
             SCRIPT_TYPE="install"
@@ -121,35 +129,35 @@ function advancedMenu() {
                 whiptail --title "Docker install" --msgbox "Docker installed successfully" 8 40
             fi
             ;;
-        4)
+        5)
             echo "Deploying Portainer"
             SCRIPT=deploy_portainer.sh
             SCRIPT_TYPE="install"
             download
             whiptail --title "Portainer deployment" --msgbox "Portainer deployed successfully" 8 45
             ;;
-        5)
+        6)
             echo "Updating Portainer"
             SCRIPT=update_portainer.sh
-            SCRIPT_TYPE="install"
+            SCRIPT_TYPE="update"
             download
             whiptail --title "Portainer update" --msgbox "Portainer updated successfully" 8 40
             ;;
-        6)
+        7)
             echo "Installing Webmin"
             SCRIPT=install_webmin.sh
             SCRIPT_TYPE="install"
             download
             whiptail --title "Webmin install" --msgbox "Webmin installed successfully" 8 35
             ;;
-        7)  
+        8)  
             echo "Mounting smb drive"
             SCRIPT=mountSMB.sh
             SCRIPT_TYPE="update"
             download
             whiptail --title "Mounting drive" --msgbox "Drive mounted successfull" 8 40
             ;;
-        8)  
+        9)  
             whiptail --title "Delete Script" --yesno "Are you sure you want to delete everything?" 10 60
             if [ $? -eq 0 ]
             then
@@ -162,7 +170,7 @@ function advancedMenu() {
                 ./scripts.sh
             fi
             ;;
-        9)  
+        10)  
             whiptail --title "Script update" --yesno "Do you want to update this script?" 9 60
             if [ $? -eq 0 ]
             then
