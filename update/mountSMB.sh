@@ -1,14 +1,27 @@
 #!/bin/bash
 
-VERSION="0.7.8"
+VERSION="0.8.0"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Colour
+log=mountSMB.txt
 
-echo -e "${YELLOW}running Version $VERSION of the script $TIME_STAMP ${NC}"
+mkdir -p logs # create log folder if not present
+echo "" >> logs/$log # add a new line to make it easier to read
+
+function exit_code() {
+    if [ $? -eq 0 ]
+    then
+        echo -e "${GREEN}$COMMAND was successfully $TIME_STAMP ${NC}"; echo "$TIME_STAMP $COMMAND was successful" >> logs/$log
+    else
+        echo -e "${RED}$COMMAND was not successful $TIME_STAMP ${NC}"; echo "$TIME_STAMP $COMMAND was not successful" >> logs/$log
+    fi
+}
+
+echo -e "${YELLOW}running Version $VERSION of the script $TIME_STAMP ${NC}"; echo "$TIME_STAMP running Version $VERSION of the script" >> logs/$log
 
 # Check if cifs-utils is installed
 if ! command -v mount.cifs &> /dev/null
@@ -47,11 +60,11 @@ sudo chmod 600 "$credentials_file"                        # change file permissi
 # Check if the current user has permission to create a folder at the mount point
 if [ ! -w "$mount_point" ]
 then
-    echo -e "${RED}You do not have write permission to $mount_point. $TIME_STAMP ${NC}"
-    echo -e "${YELLOW}Running the mount command with sudo. $TIME_STAMP ${NC}"
+    echo -e "${RED}You do not have write permission to $mount_point. $TIME_STAMP ${NC}"; echo "$TIME_STAMP ERROR You do not have write permission to $mount_point" >> logs/$log
+    echo -e "${YELLOW}Running the mount command with sudo. $TIME_STAMP ${NC}"; echo "$TIME_STAMP Running the mount command with sudo" >> logs/$log
     sudo mkdir -p "$mount_point"
 else
-    echo -e "${YELLOW}You have write permission to $mount_point. $TIME_STAMP ${NC}"
+    echo -e "${YELLOW}You have write permission to $mount_point. $TIME_STAMP ${NC}"; echo "$TIME_STAMP You have write permission to $mount_point" >> logs/$log
 fi
 
 # Mount the SMB share
@@ -60,9 +73,9 @@ sudo mount -t cifs //"$smb_host"/"$smb_share" "$mount_point" -o credentials="$cr
 # Check if the mount was successful
 if [ $? -eq 0 ]
 then
-    echo -e "${GREEN}SMB share mounted successfully at $mount_point $TIME_STAMP ${NC}"
+    echo -e "${GREEN}SMB share mounted successfully at $mount_point $TIME_STAMP ${NC}"; echo "$TIME_STAMP ${GREEN}SMB share mounted successfully at $mount_point" >> logs/$log
 else
-    echo -e "${RED}Failed to mount SMB share $TIME_STAMP ${NC}"
+    echo -e "${RED}Failed to mount SMB share $TIME_STAMP ${NC}"; echo "$TIME_STAMP ERROR Failed to mount SMB share" >> logs/$log
 fi
 
 # Prompt user if the mount should be permanent
@@ -71,7 +84,7 @@ if [ "$permanent_mount" == "y" ]
 then
     # Add the mount to /etc/fstab for permanent mounting
     echo "//${smb_host}/${smb_share} ${mount_point} cifs credentials="$credentials_file",vers=3.0,gid=1000,uid=1000 0 0" | sudo tee -a /etc/fstab
-    echo -e "${GREEN}Mount added to /etc/fstab for permanent mounting. $TIME_STAMP ${NC}"
+    echo -e "${GREEN}Mount added to /etc/fstab for permanent mounting. $TIME_STAMP ${NC}"; echo "$TIME_STAMP Mount added to /etc/fstab for permanent mounting" >> logs/$log
 fi
 
 # reload systemd

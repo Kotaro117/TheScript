@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="2.7.2"
+VERSION="2.8.0"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -8,20 +8,28 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Colour
 INSATALL_PATH="install"
+log=install_docker.txt
+
+mkdir -p logs # create log folder if not present
+echo "" >> logs/$log # add a new line to make it easier to read
 
 function check_dependency() {
     command -v $1 >/dev/null 2>&1 || {
-        echo "$1 is required but not installed. Would you like to install it?"
+        echo -e "${YELLOW}$1 is required but not installed. Would you like to install it? $TIME_STAMP ${NC}"; echo "$TIME_STAMP $1 is required but not installed. Would you like to install it?" >> logs/$log
         read -p "Install $1? (y/n): " answer
         if [ "$answer" == "y" ] 
         then
+            echo "$TIME_STAMP User chosed "y"" >> logs/$log
             sudo apt-get install -y $1
         else
+            echo "$TIME_STAMP User chosed "n"" >> logs/$log
             echo "Aborting"
             exit 1
         fi
     }
 }
+
+echo -e "${YELLOW}running Version $VERSION of the script $TIME_STAMP ${NC}"; echo "$TIME_STAMP running Version $VERSION of the script" >> logs/$log
 
 # Check for dependencies (Whiptail)
 check_dependency whiptail
@@ -32,7 +40,7 @@ fi
 
 if command -v docker
 then
-    echo -e "${YELLOW} Docker is allready installed $TIME_STAMP ${NC}"
+    echo -e "${YELLOW} Docker is allready installed $TIME_STAMP ${NC}"; echo "$TIME_STAMP Docker is allready installed" >> logs/$log
     $INSATALL_PATH/./docker_groupAdd.sh 
 else
     # Uninstall all conflicting packages
