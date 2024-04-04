@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="2.3.2"
+VERSION="2.3.3"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -33,6 +33,18 @@ function check_dependency() {                                                   
 }
 
 function check_sudo() {                                                         # Check for sudo (if used inside a docker container)
+    command -v sudo >/dev/null 2>&1 || {
+        echo -e "${RED}sudo is required but not installed. Would you like to install it? $TIME_STAMP ${NC}"
+        read -p "Install sudo? (y/n): " answer
+        if [ "$answer" == "y" ] 
+        then
+            apt-get update && apt-get install -y sudo
+        else
+            echo "Aborting"
+            exit 1
+        fi
+    }
+}
 
 echo -e "${YELLOW}running Version $VERSION of the script $TIME_STAMP ${NC}"
 
