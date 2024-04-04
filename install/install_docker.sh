@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="2.7.1"
+VERSION="2.7.2"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -25,6 +25,10 @@ function check_dependency() {
 
 # Check for dependencies (Whiptail)
 check_dependency whiptail
+if [ ! -f $INSATALL_PATH/docker_groupAdd.sh ]
+then
+    wget -O "$INSATALL_PATH/docker_groupAdd.sh" https://raw.githubusercontent.com/Kotaro117/TheScript/main/install/docker_groupAdd.sh && chmod +x docker_groupAdd.sh
+fi
 
 if command -v docker
 then
