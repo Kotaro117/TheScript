@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.11.2"
+VERSION="0.11.3"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -13,13 +13,16 @@ log=logs/scripts.txt
 mkdir -p logs # create log folder if not present
 echo "" >> $log # add a new line to make it easier to read
 
-echo -e "${YELLOW}running Version $VERSION of the script $TIME_STAMP ${NC}"; echo "$TIME_STAMP running Version $VERSION of the script" >> $log
+echo -e "${YELLOW}running Version $VERSION of the script $TIME_STAMP ${NC}"
+echo "$TIME_STAMP running Version $VERSION of the script" >> $log
 
 function update_script_new() {
     if [ "$(curl -s https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh | grep -oP 'VERSION="\K[^"]+')" != "$VERSION" ]
     then
         echo -e "${YELLOW}No update of this script needed you're running Version $VERSION $TIME_STAMP ${NC}"
+        echo "$TIME_STAMP No update of this script needed, running Version $VERSION" >> $log
     else
+        echo "$TIME_STAMP an update was found" >> $log
         whiptail --title "Script update" --yesno "An update was found, you are on Version $VERSION. Do you want to update this script?" 10 60
         if [ $? -eq 0 ]
         then
@@ -46,9 +49,11 @@ function update_script_old() {
     wget -O scripts.sh.update $SCRIPT_URL                                       # download the script again
     if [ $? -eq 0 ]                                                             # check if download was successful
     then
+        echo "$TIME_STAMP script has been downloaded" >> $log
         if grep -q "VERSION=\"$VERSION\"" scripts.sh.update                     # check if the version number is the same
         then                                                                    # Version number is the same
             rm scripts.sh.update                                                # deletes the downloaded version again
+            echo "$TIME_STAMP No update needed" >> $log
             echo -e "${YELLOW}No update of this script needed you're running Version $VERSION $TIME_STAMP ${NC}"                                             
         else                                                                    # Version is different
             whiptail --title "Script update" --yesno "An update was found, you are on Version $VERSION. Do you want to update this script?" 10 60
@@ -67,13 +72,14 @@ function update_script_old() {
             fi
         fi
     else                                                                        # Download was not successful
+        echo "$TIME_STAMP ERROR download was not successful" >> $log
         echo -e "${RED}Error downloading the update $TIME_STAMP ${NC}" 
     fi
 }
 
 function download() {
     mkdir -p $SCRIPT_TYPE                   # creates the necessary folder if it's not allready present
-    if [ ! -f $SCRIPT_TYPE/$SCRIPT ]        # checks if the update script is not present  
+    if [ ! -f $SCRIPT_TYPE/$SCRIPT ]        # checks if the script is not present  
     then
         wget -O "$SCRIPT_TYPE/$SCRIPT" https://raw.githubusercontent.com/Kotaro117/TheScript/main/$SCRIPT_TYPE/$SCRIPT && chmod +x $SCRIPT_TYPE/$SCRIPT
     fi
@@ -105,6 +111,7 @@ function advancedMenu() {
             ;;
         2)
             echo -e "${YELLOW}Updating CA certificate store $TIME_STAMP ${NC}"
+            echo "$TIME_STAMP "Update CA store" has been choosen" >> $log
             SCRIPT=update_ca-cert-store.sh
             SCRIPT_TYPE="update"
             download
