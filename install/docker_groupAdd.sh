@@ -1,33 +1,33 @@
 #!/bin/bash
 
-VERSION="3.1"
+VERSION="3.2"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Colour
-log=docker_groupAdd.txt
+log=logs/docker_groupAdd.txt
 
 mkdir -p logs # create log folder if not present
-echo "" >> logs/$log # add a new line to make it easier to read
+echo "" >> $log # add a new line to make it easier to read
 
 function exit_code() {
     if [ $? -eq 0 ]
     then
          echo -e "${GREEN}User <$USER> has been added to the Docker group. Please log out and log back in for the changes to take effect $TIME_STAMP ${NC}"
-         echo "$TIME_STAMP User <$USER> has been added to the Docker group. Please log out and log back in for the changes to take effect" >> logs/$log
+         echo "User <$USER> has been added to the Docker group. Please log out and log back in for the changes to take effect" >> $log
     else
          echo -e "${RED}User <$USER> has NOT been added to the Docker group. $TIME_STAMP ${NC}"
-          echo "$TIME_STAMP User <$USER> has NOT been added to the Docker group" >> logs/$log
+          echo "User <$USER> has NOT been added to the Docker group" >> $log
     fi
 }
 
-echo -e "${YELLOW}running Version $VERSION of the script $TIME_STAMP ${NC}"; echo "$TIME_STAMP running Version $VERSION of the script" >> logs/$log
+echo -e "${YELLOW}running Version $VERSION of the script $TIME_STAMP ${NC}"; echo "$TIME_STAMP running Version $VERSION of the script" >> $log
 
 if [ "$(groups | grep -c docker)" -eq 1 ]
 then
-    echo -e "${YELLOW}Your user <$USER> is allready a member of the docker group $TIME_STAMP ${NC}"; echo "$TIME_STAMP Your user <$USER> is allready a member of the docker group" >> logs/$log
+    echo -e "${YELLOW}Your user <$USER> is allready a member of the docker group $TIME_STAMP ${NC}"; echo "$TIME_STAMP Your user <$USER> is allready a member of the docker group" >> $log
 else
     sudo usermod -aG docker $USER # Add current user to the docker group
     exit_code
