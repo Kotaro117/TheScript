@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.9.0"
+VERSION="0.9.1"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -47,8 +47,8 @@ fi
 # Prompt user for SMB share details
 read -p "Enter the SMB host (e.g. 192.168.0.1): " smb_host
 read -p "Enter the SMB share name (e.g. install): " smb_share
-read -p "Enter your username: " smb_user
-read -s -p "Enter your password: " smb_password
+read -p "Enter your SMB username: " smb_user
+read -s -p "Enter your SMB password: " smb_password
 echo    # Add a newline after the password prompt
 read -p "Where do you want to mount the share?: " mount_point # Specify the mount point
 
