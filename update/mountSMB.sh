@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.8.1"
+VERSION="0.8.2"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -56,16 +56,8 @@ echo "password=$smb_password" | sudo tee -a "$credentials_file" > /dev/null
 sudo chown root:root "$credentials_file"                  # change file permission to root so no one can see the password
 sudo chmod 600 "$credentials_file"                        # change file permission to root so no one can see the password
 
-
-# Check if the current user has permission to create a folder at the mount point
-if [ ! -w "$mount_point" ]
-then
-    echo -e "${RED}You do not have write permission to $mount_point. $TIME_STAMP ${NC}"; echo "$TIME_STAMP ERROR You do not have write permission to $mount_point" >> logs/$log
-    echo -e "${YELLOW}Running the mount command with sudo. $TIME_STAMP ${NC}"; echo "$TIME_STAMP Running the mount command with sudo" >> logs/$log
-    sudo mkdir -p "$mount_point"
-else
-    echo -e "${YELLOW}You have write permission to $mount_point. $TIME_STAMP ${NC}"; echo "$TIME_STAMP You have write permission to $mount_point" >> logs/$log
-fi
+# creates the mount point if not allready there
+sudo mkdir -p "$mount_point"
 
 # Mount the SMB share
 sudo mount -t cifs //"$smb_host"/"$smb_share" "$mount_point" -o credentials="$credentials_file",vers=3.0
@@ -85,11 +77,11 @@ then
     # Add the mount to /etc/fstab for permanent mounting
     echo "//${smb_host}/${smb_share} ${mount_point} cifs credentials="$credentials_file",vers=3.0,gid=1000,uid=1000 0 0" | sudo tee -a /etc/fstab
     echo -e "${GREEN}Mount added to /etc/fstab for permanent mounting. $TIME_STAMP ${NC}"; echo "$TIME_STAMP Mount added to /etc/fstab for permanent mounting" >> logs/$log
+    # unmound and mount again to be able to write inside
+    sudo umount $mount_point
+    sudo mount $mount_point
 fi
 
 # reload systemd
 sudo systemctl daemon-reload
 
-# unmound and mount again to be able to write inside
-sudo umount $mount_point
-sudo mount $mount_point
