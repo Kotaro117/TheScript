@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.8.2"
+VERSION="0.8.3"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -91,3 +91,4 @@ fi
 
 # reload systemd
 sudo systemctl daemon-reload
+
