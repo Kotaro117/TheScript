@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="2.8.0"
+VERSION="2.8.1"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -60,9 +60,6 @@ else
 
     # Install the latest Docker packages
     sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
-    # Verify that the Docker Engine installation is successful by running the hello-world image.
-    sudo docker run hello-world
 
     # Add user to the docker group
     $INSATALL_PATH/./docker_groupAdd.sh 

@@ -81,9 +81,14 @@ read -p "Do you want to make this mount permanent? (y/n): " permanent_mount
 if [ "$permanent_mount" == "y" ]
 then
     # Add the mount to /etc/fstab for permanent mounting
+<<<<<<< HEAD
     echo "//${smb_host}/${smb_share} ${mount_point} cifs credentials="$credentials_file",vers=3.0,uid=$(id -u),gid=$(id -g) 0 0" | sudo tee -a /etc/fstab
     echo -e "${GREEN}Mount added to /etc/fstab for permanent mounting. $TIME_STAMP ${NC}"
     echo "Mount added to /etc/fstab for permanent mounting" >> $log
+=======
+    echo "//${smb_host}/${smb_share} ${mount_point} cifs credentials="$credentials_file",vers=3.0,gid=1000,uid=1000 0 0" | sudo tee -a /etc/fstab
+    echo -e "${GREEN}Mount added to /etc/fstab for permanent mounting. $TIME_STAMP ${NC}"; echo "$TIME_STAMP Mount added to /etc/fstab for permanent mounting" >> logs/$log
+>>>>>>> a0747272da23205bfd1c6582f363e98cbc6aa778
     # unmound and mount again to be able to write inside
     sudo umount $mount_point
     sudo mount $mount_point
