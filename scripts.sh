@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.12.1"
+VERSION="0.11.3"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -88,7 +88,7 @@ function download() {
 
 function advancedMenu() {
 
-    ADVSEL=$(whiptail --title "Menu Version $VERSION" --fb --menu "Select an option" 18 80 11 \
+    ADVSEL=$(whiptail --title "Menu Version $VERSION" --fb --menu "Select an option" 18 80 10 \
         "1" "Update your system" \
         "2" "Update CA certificate store" \
         "3" "Install Proxmox guest agent (Debian), run it, and enable autostart" \
@@ -98,13 +98,12 @@ function advancedMenu() {
         "7" "Setup Webmin repos and install it (Debian)" \
         "8" "Mount a SMB drive" \
         "9" "Delete this script" \
-        "10" "Update this script" \
-        "11" "Install Flatpak" 3>&1 1>&2 2>&3)
+        "10" "Update this script" 3>&1 1>&2 2>&3)
 
     case $ADVSEL in
         1)
             echo -e "${YELLOW}Updating system $TIME_STAMP ${NC}"
-            echo ""System update" has been choosen" >> $log
+            echo "$TIME_STAMP "System update" has been choosen" >> $log
             SCRIPT=update_system.sh
             SCRIPT_TYPE="update"
             download
@@ -112,7 +111,7 @@ function advancedMenu() {
             ;;
         2)
             echo -e "${YELLOW}Updating CA certificate store $TIME_STAMP ${NC}"
-            echo ""Update CA store" has been choosen" >> $log
+            echo "$TIME_STAMP "Update CA store" has been choosen" >> $log
             SCRIPT=update_ca-cert-store.sh
             SCRIPT_TYPE="update"
             download
@@ -120,7 +119,7 @@ function advancedMenu() {
             ;;
         3)
             echo -e "${YELLOW}Installing Proxmox guest agent (Debian) and enabling autostart $TIME_STAMP ${NC}"
-            echo ""Install Proxmox guest agent" has been choosen" >> $log
+            echo "$TIME_STAMP "Install Proxmox guest agent" has been choosen" >> $log
             SCRIPT=install_proxmoxGuestAgent.sh
             SCRIPT_TYPE="install"
             download
@@ -128,14 +127,14 @@ function advancedMenu() {
             ;;
         4)
             echo -e "${YELLOW}Installing Docker $TIME_STAMP ${NC}"
-            echo ""Install Docker" has been choosen" >> $log
+            echo "$TIME_STAMP "Install Docker" has been choosen" >> $log
             SCRIPT=install_docker.sh
             SCRIPT_TYPE="install"
             if command -v docker
             then
                 whiptail --title "Install Docker" --msgbox "Docker is allready installed" 8 60
-                echo -e "${YELLOW}Docker is allready installed $TIME_STAMP ${NC}"
-                echo "Docker is allready installed" >> $log
+                echo -e "${YELLOW} Docker is allready installed $TIME_STAMP ${NC}"
+                echo "$TIME_STAMP Docker is allready installed" >> $log
                 if [ ! -f $SCRIPT_TYPE/docker_groupAdd.sh ]
                 then
                     wget -O "$SCRIPT_TYPE/docker_groupAdd.sh" https://raw.githubusercontent.com/Kotaro117/TheScript/main/install/docker_groupAdd.sh && chmod +x $SCRIPT_TYPE/docker_groupAdd.sh
@@ -147,32 +146,32 @@ function advancedMenu() {
             fi
             ;;
         5)
-            echo -e "${YELLOW}Deploying Portainer $TIME_STAMP ${NC}"
-            echo ""Deploy Portainer" has been choosen" >> $log
+            echo -e "${YELLOW} Deploying Portainer $TIME_STAMP ${NC}"
+            echo "$TIME_STAMP "Deploy Portainer" has been choosen" >> $log
             SCRIPT=deploy_portainer.sh
             SCRIPT_TYPE="install"
             download
             whiptail --title "Portainer deployment" --msgbox "Portainer deployed successfully" 8 45
             ;;
         6)
-            echo -e "${YELLOW}Updating Portainer $TIME_STAMP ${NC}"
-            echo ""Update Portainer" has been choosen" >> $log
+            echo -e "${YELLOW} Updating Portainer $TIME_STAMP ${NC}"
+            echo "$TIME_STAMP "Update Portainer" has been choosen" >> $log
             SCRIPT=update_portainer.sh
             SCRIPT_TYPE="update"
             download
             whiptail --title "Portainer update" --msgbox "Portainer updated successfully" 8 40
             ;;
         7)
-            echo -e "${YELLOW}Installing Webmin $TIME_STAMP ${NC}"
-            echo ""Install Webmin" has been choosen" >> $log
+            echo -e "${YELLOW} Installing Webmin $TIME_STAMP ${NC}"
+            echo "$TIME_STAMP "Install Webmin" has been choosen" >> $log
             SCRIPT=install_webmin.sh
             SCRIPT_TYPE="install"
             download
             whiptail --title "Webmin install" --msgbox "Webmin installed successfully" 8 35
             ;;
         8)  
-            echo -e "${YELLOW}Mounting smb drive $TIME_STAMP ${NC}"
-            echo ""Mounting smb drive" has been choosen" >> $log
+            echo -e "${YELLOW} Mounting smb drive $TIME_STAMP ${NC}"
+            echo "$TIME_STAMP "Mounting smb drive" has been choosen" >> $log
             SCRIPT=mountSMB.sh
             SCRIPT_TYPE="update"
             download
@@ -183,15 +182,12 @@ function advancedMenu() {
             echo "$TIME_STAMP "Delete script" has been choosen" >> $log
             if [ $? -eq 0 ]
             then
-                echo -e "${RED}Deleting everything $TIME_STAMP ${NC}" 
-                echo ""yes" has been choosen" >> $log
+                echo -e "${RED}Deleting everything $TIME_STAMP ${NC}"; echo "$TIME_STAMP "yes" has been choosen" >> $log
                 rm -R update/ install/ scripts.sh
-                echo -e "${GREEN}All files have been deleted $TIME_STAMP ${NC}"
-                echo "All files have been deleted" >> $log
+                echo -e "${GREEN}All files have been deleted $TIME_STAMP ${NC}"; echo "$TIME_STAMP All files have been deleted" >> $log
             else
                 whiptail --title "Delete Script" --msgbox "Script has not been deleted" 8 35
-                echo -e "${YELLOW}Deletion canceled $TIME_STAMP ${NC}"
-                echo "Deletion canceled" >> $log
+                echo -e "${YELLOW}Deletion canceled $TIME_STAMP ${NC}"; echo "$TIME_STAMP Deletion canceled" >> $log
                 ./scripts.sh
             fi
             ;;
@@ -205,14 +201,6 @@ function advancedMenu() {
                 whiptail --title "Script update" --msgbox "Script has not been updated" 9 60
                 ./scripts.sh
             fi
-            ;;
-        11)
-            echo -e "${YELLOW}Installing flatpak $TIME_STAMP ${NC}"
-            echo ""Install flatpak" has been choosen" >> $log
-            SCRIPT=install_flatpak.sh
-            SCRIPT_TYPE="install"
-            download
-            whiptail --title "flatpak install" --msgbox "flatpak installed successfully" 8 40
             ;;
         *)
             echo "Invalid choice"
