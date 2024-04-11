@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.10.0"
+VERSION="0.10.1"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -15,8 +15,8 @@ function check_mount() {
         echo -e "${GREEN}SMB share mounted successfully at $mount_point $TIME_STAMP ${NC}"
         echo "SMB share mounted successfully at $mount_point" >> $log
     else
-        echo -e "${RED}Failed to mount SMB share $TIME_STAMP ${NC}"
-        echo "ERROR Failed to mount SMB share" >> $log
+        echo -e "${RED}Failed to mount SMB share. Check your user credentials $credentials_file $TIME_STAMP ${NC}"
+        echo "ERROR Failed to mount SMB share. Check your user credentials $credentials_file" >> $log
     fi
 }
 
