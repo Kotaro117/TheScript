@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.11.8"
+VERSION="0.11.9"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -133,7 +133,7 @@ function advancedMenu() {
             if command -v docker
             then
                 whiptail --title "Install Docker" --msgbox "Docker is allready installed" 8 60
-                echo -e "${YELLOW} Docker is allready installed $TIME_STAMP ${NC}"
+                echo -e "${YELLOW}Docker is allready installed $TIME_STAMP ${NC}"
                 echo "Docker is allready installed" >> $log
                 if [ ! -f $SCRIPT_TYPE/docker_groupAdd.sh ]
                 then
@@ -146,7 +146,7 @@ function advancedMenu() {
             fi
             ;;
         5)
-            echo -e "${YELLOW} Deploying Portainer $TIME_STAMP ${NC}"
+            echo -e "${YELLOW}Deploying Portainer $TIME_STAMP ${NC}"
             echo "Deploy Portainer has been choosen" >> $log
             SCRIPT=deploy_portainer.sh
             SCRIPT_TYPE="install"
@@ -154,7 +154,7 @@ function advancedMenu() {
             whiptail --title "Portainer deployment" --msgbox "Portainer deployed successfully" 8 45
             ;;
         6)
-            echo -e "${YELLOW} Updating Portainer $TIME_STAMP ${NC}"
+            echo -e "${YELLOW}Updating Portainer $TIME_STAMP ${NC}"
             echo "Update Portainer has been choosen" >> $log
             SCRIPT=update_portainer.sh
             SCRIPT_TYPE="update"
@@ -162,7 +162,7 @@ function advancedMenu() {
             whiptail --title "Portainer update" --msgbox "Portainer updated successfully" 8 40
             ;;
         7)
-            echo -e "${YELLOW} Installing Webmin $TIME_STAMP ${NC}"
+            echo -e "${YELLOW}Installing Webmin $TIME_STAMP ${NC}"
             echo "Install Webmin has been choosen" >> $log
             SCRIPT=install_webmin.sh
             SCRIPT_TYPE="install"
@@ -170,7 +170,7 @@ function advancedMenu() {
             whiptail --title "Webmin install" --msgbox "Webmin installed successfully" 8 35
             ;;
         8)  
-            echo -e "${YELLOW} Mounting smb drive $TIME_STAMP ${NC}"
+            echo -e "${YELLOW}Mounting smb drive $TIME_STAMP ${NC}"
             echo "Mounting smb drive has been choosen" >> $log
             SCRIPT=mountSMB.sh
             SCRIPT_TYPE="update"
