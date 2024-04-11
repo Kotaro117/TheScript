@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.11.6"
+VERSION="0.11.7"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -20,7 +20,7 @@ function update_script_new() {
     if [ "$(curl -s https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh | grep -oP 'VERSION="\K[^"]+')" != "$VERSION" ]
     then
         echo -e "${YELLOW}No update of this script needed you're running Version $VERSION $TIME_STAMP ${NC}"
-        echo "$TIME_STAMP No update of this script needed, running Version $VERSION" >> $log
+        echo "No update of this script needed, running Version $VERSION" >> $log
     else
         echo "$TIME_STAMP an update was found" >> $log
         whiptail --title "Script update" --yesno "An update was found, you are on Version $VERSION. Do you want to update this script?" 10 60
@@ -53,7 +53,7 @@ function update_script_old() {
         if grep -q "VERSION=\"$VERSION\"" scripts.sh.update                     # check if the version number is the same
         then                                                                    # Version number is the same
             rm scripts.sh.update                                                # deletes the downloaded version again
-            echo "$TIME_STAMP No update needed" >> $log
+            echo "No update needed" >> $log
             echo -e "${YELLOW}No update of this script needed you're running Version $VERSION $TIME_STAMP ${NC}"                                             
         else                                                                    # Version is different
             whiptail --title "Script update" --yesno "An update was found, you are on Version $VERSION. Do you want to update this script?" 10 60
