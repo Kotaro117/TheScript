@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.11.3"
+VERSION="0.11.4"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -240,5 +240,5 @@ check_sudo                                                                      
 #check_dependency curl                                                          # only needed when the new update function works
 check_dependency wget                                                           # needed to download the scripts from GitHub
 update_script_old
-check_dependency whiptail                                                       # needed fot the script GUI
+check_dependency whiptail                                                       # needed for the script GUI
 advancedMenu
