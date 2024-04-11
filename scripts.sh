@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.12.0"
+VERSION="0.12.1"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
