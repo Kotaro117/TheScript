@@ -1,6 +1,10 @@
 #!/bin/bash
 
-VERSION="0.11.10"
+########################
+### Variable section ###
+########################
+
+VERSION="0.11.11"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -10,12 +14,9 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Colour
 log=logs/scripts.txt
 
-mkdir -p logs # create log folder if not present
-echo "" >> $log # add a new line to make it easier to read
-
-echo -e "${YELLOW}running Version $VERSION of the script $TIME_STAMP ${NC}"
-echo "$TIME_STAMP Running Version $VERSION of the script" >> $log
-
+########################
+### Function section ###
+########################
 
 function update_script_new() {
     if [ "$(curl -s https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh | grep -oP 'VERSION="\K[^"]+')" != "$VERSION" ]
@@ -241,6 +242,16 @@ function check_sudo() {                                                         
         fi
     }
 }
+
+###############################
+### Beginning of the script ###
+###############################
+
+mkdir -p logs # create log folder if not present
+echo "" >> $log # add a new line to make it easier to read
+
+echo -e "${YELLOW}running Version $VERSION of the script $TIME_STAMP ${NC}"
+echo "$TIME_STAMP Running Version $VERSION of the script" >> $log
 
 check_sudo                                                                      # needed if the script is running inside a Docker container
 #check_dependency curl                                                          # only needed when the new update function works
