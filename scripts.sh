@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.11.7"
+VERSION="0.11.8"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -22,7 +22,7 @@ function update_script_new() {
         echo -e "${YELLOW}No update of this script needed you're running Version $VERSION $TIME_STAMP ${NC}"
         echo "No update of this script needed, running Version $VERSION" >> $log
     else
-        echo "$TIME_STAMP an update was found" >> $log
+        echo "an update was found" >> $log
         whiptail --title "Script update" --yesno "An update was found, you are on Version $VERSION. Do you want to update this script?" 10 60
         if [ $? -eq 0 ]
         then
