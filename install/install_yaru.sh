@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.2.0"
+VERSION="0.2.1"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -19,8 +19,10 @@ echo "" >> $log # add a new line to make it easier to read
 echo -e "${YELLOW}running Version $VERSION of the script $TIME_STAMP ${NC}"
 echo "$TIME_STAMP running Version $VERSION of the script" >> $log
 
+# Install gnome icons etc.
 sudo apt install -y yaru-theme-gnome-shell yaru-theme-gtk yaru-theme-icon yaru-theme-sound gnome-tweaks
 
+# Install ubuntu session
 read -p "Do you want to install Ubuntu session too? (y/n): " answer
 if [ "$answer" == "y" ]
 then
