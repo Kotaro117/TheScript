@@ -4,7 +4,7 @@
 ### Variable section ###
 ########################
 
-VERSION="0.11.11"
+VERSION="0.12.0"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -92,7 +92,7 @@ function download() {
 
 function advancedMenu() {
 
-    ADVSEL=$(whiptail --title "Menu Version $VERSION" --fb --menu "Select an option" 18 80 10 \
+    ADVSEL=$(whiptail --title "Menu Version $VERSION" --fb --menu "Select an option" 20 80 11 \
         "1" "Update your system" \
         "2" "Update CA certificate store" \
         "3" "Install Proxmox guest agent (Debian), run it, and enable autostart" \
@@ -102,7 +102,8 @@ function advancedMenu() {
         "7" "Setup Webmin repos and install it (Debian)" \
         "8" "Mount a SMB drive" \
         "9" "Delete this script" \
-        "10" "Update this script" 3>&1 1>&2 2>&3)
+        "10" "Update this script" \
+        "11" "Install flatpak" 3>&1 1>&2 2>&3)
 
     case $ADVSEL in
         1)
@@ -208,6 +209,14 @@ function advancedMenu() {
                 whiptail --title "Script update" --msgbox "Script has not been updated" 9 60
                 ./scripts.sh
             fi
+            ;;
+        11)
+            echo -e "${YELLOW}Installing flatpak $TIME_STAMP ${NC}"
+            echo "Install flatpak has been choosen" >> $log
+            SCRIPT=install_flatpak.sh
+            SCRIPT_TYPE="install"
+            download
+            whiptail --title "flatpak" --msgbox "flatpak installed" 8 50
             ;;
         *)
             echo "Invalid choice"
