@@ -1,10 +1,11 @@
 #!/bin/bash
 
+
 ########################
 ### Variable section ###
 ########################
 
-VERSION="0.12.0"
+VERSION="0.12.1"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -13,6 +14,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Colour
 log=logs/scripts.txt
+
 
 ########################
 ### Function section ###
@@ -251,6 +253,7 @@ function check_sudo() {                                                         
         fi
     }
 }
+
 
 ###############################
 ### Beginning of the script ###
