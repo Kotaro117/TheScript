@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="0.1.2"
+VERSION="0.1.3"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -13,7 +13,7 @@ function exit_code() {
     if [ $? -eq 0 ]
     then
         echo -e "${GREEN}$COMMAND was successfully $TIME_STAMP ${NC}"
-        echo "ERROR $COMMAND was successful" >> $log
+        echo "$COMMAND was successful" >> $log
     else
         echo -e "${RED}$COMMAND was not successful $TIME_STAMP ${NC}"
         echo "ERROR $COMMAND was not successful" >> $log
