@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="2.8.1"
+VERSION="2.9.0"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -63,4 +63,19 @@ else
 
     # Add user to the docker group
     $INSATALL_PATH/./docker_groupAdd.sh 
+fi
+
+# Asks to deploy Portainer
+read -p "Do you want to deploy the Portainer container? (y/n): " portainer
+if [ "$portainer" == "y" ]
+then
+    echo "User has chosen to deploy Portainer" >> $log
+    mkdir -p install                               # creates the necessary folder if it's not allready present
+    if [ ! -f install/deploy_portainer.sh ]        # checks if the script is not present  
+    then
+        wget -O "install/deploy_portainer.sh" https://raw.githubusercontent.com/Kotaro117/TheScript/main/install/deploy_portainer.sh && chmod +x install/deploy_portainer.sh
+    fi
+     install/./deploy_portainer.sh
+else
+    echo "User has chosen not to deploy Portainer" >> $log
 fi
