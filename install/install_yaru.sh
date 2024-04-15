@@ -1,6 +1,11 @@
 #!/bin/bash
 
-VERSION="0.3.1"
+
+########################
+### Variable section ###
+########################
+
+VERSION="0.3.3"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -16,8 +21,13 @@ log=logs/install_yaru.txt
 
 mkdir -p logs # create log folder if not present
 echo "" >> $log # add a new line to make it easier to read
+
 echo -e "${YELLOW}running Version $VERSION of the script $TIME_STAMP ${NC}"
 echo "$TIME_STAMP running Version $VERSION of the script" >> $log
+
+echo "Scripts is executed by $USER" >> $log
+groups | grep -q '\bsudo\b' && echo "User has sudo permissions" >> $log || echo "User does not have sudo permissions" >> $log
+
 sudo apt update
 
 # Install gnome icons etc.
