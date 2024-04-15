@@ -1,6 +1,11 @@
 #!/bin/bash
 
-VERSION="3.2"
+
+########################
+### Variable section ###
+########################
+
+VERSION="3.3"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -9,8 +14,10 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Colour
 log=logs/docker_groupAdd.txt
 
-mkdir -p logs # create log folder if not present
-echo "" >> $log # add a new line to make it easier to read
+
+########################
+### Function section ###
+########################
 
 function exit_code() {
     if [ $? -eq 0 ]
@@ -19,15 +26,28 @@ function exit_code() {
          echo "User <$USER> has been added to the Docker group. Please log out and log back in for the changes to take effect" >> $log
     else
          echo -e "${RED}User <$USER> has NOT been added to the Docker group. $TIME_STAMP ${NC}"
-          echo "User <$USER> has NOT been added to the Docker group" >> $log
+        echo "User <$USER> has NOT been added to the Docker group" >> $log
     fi
 }
 
-echo -e "${YELLOW}running Version $VERSION of the script $TIME_STAMP ${NC}"; echo "$TIME_STAMP running Version $VERSION of the script" >> $log
+
+###############################
+### Beginning of the script ###
+###############################
+
+mkdir -p logs # create log folder if not present
+echo "" >> $log # add a new line to make it easier to read
+
+echo -e "${YELLOW}running Version $VERSION of the script $TIME_STAMP ${NC}"
+echo "$TIME_STAMP running Version $VERSION of the script" >> $log
+
+echo "Scripts is executed by $USER" >> $log
+groups | grep -q '\bsudo\b' && echo "User has sudo permissions" >> $log || echo "User does not have sudo permissions" >> $log
 
 if [ "$(groups | grep -c docker)" -eq 1 ]
 then
-    echo -e "${YELLOW}Your user <$USER> is allready a member of the docker group $TIME_STAMP ${NC}"; echo "$TIME_STAMP Your user <$USER> is allready a member of the docker group" >> $log
+    echo -e "${YELLOW}Your user <$USER> is allready a member of the docker group $TIME_STAMP ${NC}"
+    echo "Your user <$USER> is allready a member of the docker group" >> $log
 else
     sudo usermod -aG docker $USER # Add current user to the docker group
     exit_code
