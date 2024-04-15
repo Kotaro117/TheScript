@@ -1,6 +1,11 @@
 #!/bin/bash
 
-VERSION="0.1.3"
+
+########################
+### Variable section ###
+########################
+
+VERSION="0.1.4"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -8,6 +13,11 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Colour
 log=logs/install_flatpak.txt
+
+
+########################
+### Function section ###
+########################
 
 function exit_code() {
     if [ $? -eq 0 ]
@@ -19,6 +29,11 @@ function exit_code() {
         echo "ERROR $COMMAND was not successful" >> $log
     fi
 }
+
+
+###############################
+### Beginning of the script ###
+###############################
 
 mkdir -p logs # create log folder if not present
 echo "" >> $log # add a new line to make it easier to read
