@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="2.5.0"
+VERSION="2.5.2"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -23,10 +23,10 @@ function exit_code() {
     if [ $? -eq 0 ]
     then
         echo -e "${GREEN}$COMMAND was successfully $TIME_STAMP ${NC}"
-        echo "$TIME_STAMP $COMMAND was successful" >> $log
+        echo "$COMMAND was successful" >> $log
     else
         echo -e "${RED}$COMMAND was not successful $TIME_STAMP ${NC}"
-        echo "$TIME_STAMP ERROR $COMMAND was not successful" >> $log
+        echo "ERROR $COMMAND was not successful" >> $log
     fi
 }
 
@@ -41,7 +41,7 @@ echo "" >> $log # add a new line to make it easier to read
 echo -e "${YELLOW}running Version $VERSION of the script $TIME_STAMP ${NC}"
 echo "$TIME_STAMP running Version $VERSION of the script" >> $log
 
-echo "Scripts is executed by $USER" >> $log
+echo "Script is executed by $USER" >> $log
 groups | grep -q '\bsudo\b' && echo "User has sudo permissions" >> $log || echo "User does not have sudo permissions" >> $log
 
 if ! command -v docker &> /dev/null
@@ -53,7 +53,7 @@ fi
 
 # Create the volume that Portainer Server will use to store its database
 COMMAND="Creation of the Portainer volume"
-if [ ! -d /var/lib/docker/volumes/portainer_data ]
+if sudo [ ! -d /var/lib/docker/volumes/portainer_data ]
 then
     sudo docker volume create portainer_data
     exit_code
