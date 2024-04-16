@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="2.4"
+VERSION="2.5.0"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -44,6 +44,13 @@ echo "$TIME_STAMP running Version $VERSION of the script" >> $log
 echo "Scripts is executed by $USER" >> $log
 groups | grep -q '\bsudo\b' && echo "User has sudo permissions" >> $log || echo "User does not have sudo permissions" >> $log
 
+if ! command -v docker &> /dev/null
+then
+    echo -e "${RED}Docker is not installed. Installed docker and re-execute this script ${NC}"
+    echo "Docker is not installed. Installed docker and re-execute this script" >> $log
+    exit 1
+fi
+
 # Create the volume that Portainer Server will use to store its database
 COMMAND="Creation of the Portainer volume"
 if [ ! -d /var/lib/docker/volumes/portainer_data ]
@@ -51,8 +58,8 @@ then
     sudo docker volume create portainer_data
     exit_code
 else
-    echo -e "${YELLOW}Volume has not been created because it's allready there $TIME_STAMP ${NC}"
-    echo "Volume has not been created because it's allready there" >> $log
+    echo -e "${YELLOW}Volume has not been created because it's already there $TIME_STAMP ${NC}"
+    echo "Volume has not been created because it's already there" >> $log
 fi
 
 # Download and install the Portainer Server container
