@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="0.3.3"
+VERSION="0.3.4"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -29,7 +29,6 @@ echo "Scripts is executed by $USER" >> $log
 groups | grep -q '\bsudo\b' && echo "User has sudo permissions" >> $log || echo "User does not have sudo permissions" >> $log
 
 sudo apt update
-
 # Install gnome icons etc.
 sudo apt install -y yaru-theme-gnome-shell yaru-theme-gtk yaru-theme-icon yaru-theme-sound gnome-tweaks
 
