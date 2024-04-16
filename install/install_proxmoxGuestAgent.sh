@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="1.3.1"
+VERSION="1.3.2"
 PACKAGE_NAME="qemu-guest-agent"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -57,6 +57,7 @@ else
         sudo apt-get install -y $PACKAGE_NAME
         exit_code
     elif command -v yum &> /dev/null
+    then
         echo "yum as a package manager is installed" >> $log
         sudo yum install -y qemu-guest-agent
         exit_code
