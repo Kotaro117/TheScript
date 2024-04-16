@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="0.2.2"
+VERSION="0.3.0"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -22,14 +22,13 @@ log=logs/install_flatpak.txt
 function exit_code() {
     if [ $? -eq 0 ]
     then
-        echo -e "${GREEN}$COMMAND was successfully $TIME_STAMP ${NC}"
+        echo -e "${GREEN}$COMMAND was successfully ${NC}"
         echo "$COMMAND was successful" >> $log
     else
-        echo -e "${RED}$COMMAND was not successful $TIME_STAMP ${NC}"
+        echo -e "${RED}$COMMAND was not successful ${NC}"
         echo "ERROR $COMMAND was not successful" >> $log
     fi
 }
-
 
 ###############################
 ### Beginning of the script ###
@@ -41,7 +40,7 @@ echo "" >> $log # add a new line to make it easier to read
 echo -e "${YELLOW}Running Version $VERSION of the script $TIME_STAMP ${NC}"
 echo "$TIME_STAMP Running Version $VERSION of the script" >> $log
 
-echo "${YELLOW}This only works on Ubuntu 18.10 or higher ${NC}"
+echo -e "${YELLOW}This only works on Ubuntu 18.10 or higher ${NC}"
 sleep 5
 
 if [ -f /etc/os-release ] && grep -q "^ID=ubuntu" /etc/os-release
@@ -59,26 +58,30 @@ then
     echo -e "${GREEN}Flatpak is already installed ${NC}"
     echo "Flatpak is already installed" >> $log
     echo -e "${YELLOW}Check $log for any errors ${NC}"
-    exit 1
+else
+    # Install Flatpak
+    echo -e "${YELLOW}Installing flatpak ${NC}"
+    echo "Installing flatpak" >> $log
+    COMMAND="Install flatpak"
+    sudo apt install -y flatpak 
+    exit_code
 fi
 
-# Install Flatpak
-echo -e "${YELLOW}Installing flatpak $TIME_STAMP ${NC}"
-echo "Installing flatpak" >> $log
-COMMAND="Install flatpak"
-sudo apt install -y flatpak 
-exit_code
-
 # Install the Software Flatpak plugin
-echo -e "${YELLOW}Installing  Software Flatpak plugin $TIME_STAMP ${NC}"
-echo "Installing Software Flatpak plugin" >> $log
-COMMAND="Install gnome-software-plugin-flatpak"
-sudo apt install -y gnome-software-plugin-flatpak
-exit_code
+if command -v gnome-software-plugin-flatpak &> /dev/null
+then 
+    echo "gnome-software-plugin-flatpak is already installed" >> $log
+else
+    echo -e "${YELLOW}Installing Software Flatpak plugin ${NC}"
+    echo "Installing Software Flatpak plugin" >> $log
+    COMMAND="Install gnome-software-plugin-flatpak"
+    sudo apt install -y gnome-software-plugin-flatpak
+    exit_code
+fi
 
 # Add the Flathub repository
 # Flathub is the best place to get Flatpak apps.
-echo -e "${YELLOW}Adding Flatpak repository $TIME_STAMP ${NC}"
+echo -e "${YELLOW}Adding Flatpak repository ${NC}"
 echo "Adding Flatpak repository" >> $log
 COMMAND="Add Flathub repository"
 sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
@@ -90,4 +93,6 @@ if [ "$do_restart" == "y" ]
 then
     echo "User has chosen to restart" >> $log
     reboot
+else
+    echo "User has chosen not to restart" >> $log
 fi
