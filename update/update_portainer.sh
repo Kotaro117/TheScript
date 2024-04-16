@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="2.3.0"
+VERSION="2.3.1"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -41,11 +41,11 @@ echo "" >> $log # add a new line to make it easier to read
 echo -e "${YELLOW}running Version $VERSION of the script $TIME_STAMP ${NC}"
 echo "$TIME_STAMP running Version $VERSION of the script" >> $log
 
-echo "Scripts is executed by $USER" >> $log
+echo "Script is executed by $USER" >> $log
 groups | grep -q '\bsudo\b' && echo "User has sudo permissions" >> $log || echo "User does not have sudo permissions" >> $log
 
 # Check if Docker is intalled
-if  command -v docker &> /dev/null
+if command -v docker &> /dev/null
 then
     echo "Docker is installed, proceed with the script" >> $log
 else
@@ -70,6 +70,6 @@ sudo docker pull portainer/portainer-ce:latest
 exit_code
 
 # Deploy updated version of Portainer
-COMMAND="Deploying of the updated version of Portainer"
+COMMAND="Deploying the new version of Portainer"
 sudo docker run -d -p 8000:8000 -p 9443:9443 --name=portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
 exit_code
