@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="0.3.0"
+VERSION="0.4.0"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -24,9 +24,11 @@ function exit_code() {
     then
         echo -e "${GREEN}$COMMAND was successfully ${NC}"
         echo "$COMMAND was successful" >> $log
+        INSTALLED=yes
     else
         echo -e "${RED}$COMMAND was not successful ${NC}"
         echo "ERROR $COMMAND was not successful" >> $log
+        INSTALLED=ERROR
     fi
 }
 
@@ -68,7 +70,7 @@ else
 fi
 
 # Install the Software Flatpak plugin
-if command -v gnome-software-plugin-flatpak &> /dev/null
+if dpkg -l | grep -q "gnome-software-plugin-flatpak"
 then 
     echo "gnome-software-plugin-flatpak is already installed" >> $log
 else
@@ -81,18 +83,30 @@ fi
 
 # Add the Flathub repository
 # Flathub is the best place to get Flatpak apps.
-echo -e "${YELLOW}Adding Flatpak repository ${NC}"
-echo "Adding Flatpak repository" >> $log
-COMMAND="Add Flathub repository"
-sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-exit_code
+if flatpak remote-list | grep -q "flathub"
+then
+    echo -e "${YELLOW}Flatpak repository has already been added ${NC}"
+    echo "Flatpak repository has already been added" >> $log
+else
+    echo -e "${YELLOW}Adding Flatpak repository ${NC}"
+    echo "Adding Flatpak repository" >> $log
+    COMMAND="Add Flathub repository"
+    sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+    exit_code
+fi
 
 # Restart
-read -p "To complete setup, restart your system. Do you want to restart your System? (y/n): " do_restart
-if [ "$do_restart" == "y" ]
-then
-    echo "User has chosen to restart" >> $log
-    reboot
-else
-    echo "User has chosen not to restart" >> $log
+if [ "$INSTALLED" == "yes" ]
+then 
+    read -p "To complete setup, restart your system. Do you want to restart your System? (y/n): " do_restart
+    if [ "$do_restart" == "y" ]
+    then
+        echo "User has chosen to restart" >> $log
+        reboot
+    else
+        echo "User has chosen not to restart" >> $log
+    fi
+elif [ "$INSTALLED" == "ERROR" ]
+    echo -e "${RED}An error during installation occurred, please check the log > $log ${NC}"
+    echo "An error during installation occurred" >> $log
 fi
