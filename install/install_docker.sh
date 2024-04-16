@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="2.10.1"
+VERSION="2.10.0"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -48,6 +48,8 @@ echo "" >> $log # add a new line to make it easier to read
 echo -e "${YELLOW}running Version $VERSION of the script $TIME_STAMP ${NC}"
 echo "$TIME_STAMP running Version $VERSION of the script" >> $log
 
+echo "Scripts is executed by $USER" >> $log
+groups | grep -q '\bsudo\b' && echo "User has sudo permissions" >> $log || echo "User does not have sudo permissions" >> $log
 
 if [ ! -f $INSATALL_PATH/docker_groupAdd.sh ]
 then
@@ -58,12 +60,12 @@ if command -v docker
 then
     echo -e "${YELLOW} Docker is allready installed $TIME_STAMP ${NC}"
     echo "Docker is allready installed" >> $log
-    $INSATALL_PATH/./docker_groupAdd.sh 
 else
     # Uninstall all conflicting packages
     for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg -y; done
 
     # Add Docker's official GPG key:
+    echo "Adding Docker's official GPG key" >> $log
     sudo apt-get update
     sudo apt-get install -y ca-certificates curl gnupg
     sudo install -m 0755 -d /etc/apt/keyrings
@@ -71,15 +73,14 @@ else
     sudo chmod a+r /etc/apt/keyrings/docker.gpg
 
     # Add the repository to Apt sources:
+    echo "Adding the repository to Apt sources" >> $log
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(. /etc/os-release
     echo "$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
     sudo apt-get update
 
     # Install the latest Docker packages
+    echo "Installing Docker" >> $log
     sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-
-    # Add user to the docker group
-    $INSATALL_PATH/./docker_groupAdd.sh 
 fi
 
 # Asks to deploy Portainer
@@ -96,3 +97,6 @@ then
 else
     echo "User has chosen not to deploy Portainer" >> $log
 fi
+
+# Add user to the Docker group
+$INSATALL_PATH/./docker_groupAdd.sh
