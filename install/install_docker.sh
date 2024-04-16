@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="2.10.0"
+VERSION="2.10.1"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -14,7 +14,6 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Colour
 INSATALL_PATH="install"
 log=logs/install_docker.txt
-
 
 
 ########################
@@ -49,8 +48,7 @@ echo "" >> $log # add a new line to make it easier to read
 echo -e "${YELLOW}running Version $VERSION of the script $TIME_STAMP ${NC}"
 echo "$TIME_STAMP running Version $VERSION of the script" >> $log
 
-# Check for dependencies (Whiptail)
-check_dependency whiptail
+
 if [ ! -f $INSATALL_PATH/docker_groupAdd.sh ]
 then
     wget -O "$INSATALL_PATH/docker_groupAdd.sh" https://raw.githubusercontent.com/Kotaro117/TheScript/main/install/docker_groupAdd.sh && chmod +x $INSATALL_PATH/docker_groupAdd.sh
@@ -94,7 +92,7 @@ then
     then
         wget -O "install/deploy_portainer.sh" https://raw.githubusercontent.com/Kotaro117/TheScript/main/install/deploy_portainer.sh && chmod +x install/deploy_portainer.sh
     fi
-     install/./deploy_portainer.sh
+    install/./deploy_portainer.sh
 else
     echo "User has chosen not to deploy Portainer" >> $log
 fi
