@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="0.12.3"
+VERSION="0.12.4"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -264,6 +264,9 @@ echo "" >> $log # add a new line to make it easier to read
 
 echo -e "${YELLOW}running Version $VERSION of the script $TIME_STAMP ${NC}"
 echo "$TIME_STAMP Running Version $VERSION of the script" >> $log
+
+echo "Scripts is executed by $USER" >> $log
+groups | grep -q '\bsudo\b' && echo "User has sudo permissions" >> $log || echo "User does not have sudo permissions" >> $log
 
 check_sudo                                                                      # needed if the script is running inside a Docker container
 #check_dependency curl                                                          # only needed when the new update function works
