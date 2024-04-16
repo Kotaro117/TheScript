@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="0.1.4"
+VERSION="0.2.1"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -41,8 +41,26 @@ echo "" >> $log # add a new line to make it easier to read
 echo -e "${YELLOW}Running Version $VERSION of the script $TIME_STAMP ${NC}"
 echo "$TIME_STAMP Running Version $VERSION of the script" >> $log
 
-echo "This only works on Ubuntu 18.10 or higher"
-sleep 10
+echo "${YELLOW}This only works on Ubuntu 18.10 or higher ${NC}"
+sleep 5
+
+if [ -f /etc/os-release ] && grep -q "^ID=ubuntu" /etc/os-release
+then
+    echo "The OS is Ubuntu" >> $log
+else
+    echo -e "${RED}The OS is not Ubuntu ${NC}"
+    echo "The OS is not Ubuntu" >>$log
+    echo -e "${YELLOW}Check $log for any errors ${NC}"
+    exit 1
+fi
+
+if command -v flatpak &> /dev/null
+then
+    echo -e "${GREEN}Flatpak is already installed ${NC}"
+    echo "Flatpak is already installed" >> $log
+    echo -e "${YELLOW}Check $log for any errors ${NC}"
+    exit 1
+fi
 
 # Install Flatpak
 echo -e "${YELLOW}Installing flatpak $TIME_STAMP ${NC}"
