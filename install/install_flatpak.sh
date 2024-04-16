@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="0.4.0"
+VERSION="0.4.1"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -107,6 +107,9 @@ then
         echo "User has chosen not to restart" >> $log
     fi
 elif [ "$INSTALLED" == "ERROR" ]
+then
     echo -e "${RED}An error during installation occurred, please check the log > $log ${NC}"
     echo "An error during installation occurred" >> $log
+else
+    echo "No restard needed" >> $log
 fi
