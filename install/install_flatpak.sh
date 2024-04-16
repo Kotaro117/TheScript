@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="0.2.1"
+VERSION="0.2.2"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -88,6 +88,6 @@ exit_code
 read -p "To complete setup, restart your system. Do you want to restart your System? (y/n): " do_restart
 if [ "$do_restart" == "y" ]
 then
-    echo "User has choosen to restart" >> $log
+    echo "User has chosen to restart" >> $log
     reboot
 fi
