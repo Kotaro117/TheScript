@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="0.11.0"
+VERSION="0.11.1"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -40,7 +40,7 @@ echo "" >> $log # add a new line to make it easier to read
 echo -e "${YELLOW}running Version $VERSION of the script $TIME_STAMP ${NC}"
 echo "$TIME_STAMP running Version $VERSION of the script" >> $log
 
-echo "Scripts is executed by $USER" >> $log
+echo "Script is executed by $USER" >> $log
 groups | grep -q '\bsudo\b' && echo "User has sudo permissions" >> $log || echo "User does not have sudo permissions" >> $log
 
 # Check if cifs-utils is installed
@@ -83,7 +83,7 @@ then
         then
             if [[ $opt == "Choose nothing" ]]
             then
-                echo "You chose to select nothing."
+                echo -e "${YELLOW}You chose to select nothing. ${NC}"
                 credentials_file="/root/.smbcredentials_${smb_user}-${smb_host}"
                 # Prompt user for SMB share details
                 read -p "Enter your SMB username: " smb_user
@@ -98,12 +98,13 @@ then
                 echo "password=$smb_password" | sudo tee -a "$credentials_file" > /dev/null
                 sudo chown root:root "$credentials_file"                  # change file permission to root so no one can see the password 
             else
+                echo "User selected $opt" >> $log
                 echo "You selected: $opt"
                 credentials_file="/root/.smbcredentials_${opt}"
             fi
             break
         else
-            echo "Invalid option. Please try again."
+            echo -e "${RED}Invalid option. Please try again. ${NC}"
         fi
     done
 else
@@ -122,6 +123,7 @@ else
     sudo chown root:root "$credentials_file"                  # change file permission to root so no one can see the password 
 fi
 
+echo "credentials_file is $credentials_file" >> $log
 echo "smb_share is smb://$smb_host/$smb_share"  >> $log
 
 # creates the mount point if not allready present
