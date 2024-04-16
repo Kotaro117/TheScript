@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="2.9.0"
+VERSION="2.9.1"
 RELEASE_FILE="/etc/os-release"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -13,7 +13,7 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Colour
-log=log/update_system.txt
+log=logs/update_system.txt
 
 
 ########################
