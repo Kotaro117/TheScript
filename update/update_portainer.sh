@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="2.2.0"
+VERSION="2.3.0"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -43,6 +43,16 @@ echo "$TIME_STAMP running Version $VERSION of the script" >> $log
 
 echo "Scripts is executed by $USER" >> $log
 groups | grep -q '\bsudo\b' && echo "User has sudo permissions" >> $log || echo "User does not have sudo permissions" >> $log
+
+# Check if Docker is intalled
+if  command -v docker &> /dev/null
+then
+    echo "Docker is installed, proceed with the script" >> $log
+else
+    echo -e "${RED}Docker is not installed. Installed docker and re-execute this script ${NC}"
+    echo "Docker is not installed. Installed docker and re-execute this script" >> $log
+    exit 1
+fi
 
 # Stop Portainer
 COMMAND="Stopping of Portainer"
