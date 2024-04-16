@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="1.3.2"
+VERSION="1.3.3"
 PACKAGE_NAME="qemu-guest-agent"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -23,10 +23,10 @@ log=logs/install_proxmoxGuestAgent.txt
 function exit_code() {
     if [ $? -eq 0 ]
     then
-        echo -e "${GREEN}$COMMAND was successfully $TIME_STAMP ${NC}"
+        echo -e "${GREEN}$COMMAND was successfully ${NC}"
         echo "$COMMAND was successful" >> $log
     else
-        echo -e "${RED}$COMMAND was not successful $TIME_STAMP ${NC}"
+        echo -e "${RED}$COMMAND was not successful ${NC}"
         echo "$COMMAND was not successful" >> $log
     fi
 }
@@ -49,10 +49,11 @@ groups | grep -q '\bsudo\b' && echo "User has sudo permissions" >> $log || echo 
 COMMAND="Installation of the Proxmox guest agent"
 if  dpkg -s "$PACKAGE_NAME" | grep "Status: install ok installed"               # Checks if the guest agent is installed 
 then
-    echo -e "${YELLOW}$PACKAGE_NAME is already installed $TIME_STAMP ${NC}"
-    echo "$TIME_STAMP $PACKAGE_NAME is already installed" >> $log
+    echo -e "${YELLOW}$PACKAGE_NAME is already installed ${NC}"
+    echo "$PACKAGE_NAME is already installed" >> $log
 else
     if command -v apt &> /dev/null
+    then
         echo "apt as a package manager is installed" >> $log
         sudo apt-get install -y $PACKAGE_NAME
         exit_code
