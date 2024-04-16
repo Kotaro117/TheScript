@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="0.12.2"
+VERSION="0.12.3"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -97,7 +97,7 @@ function advancedMenu() {
     ADVSEL=$(whiptail --title "Menu Version $VERSION" --fb --menu "Select an option" 20 80 11 \
         "1" "Update your system" \
         "2" "Update CA certificate store" \
-        "3" "Install Proxmox guest agent (Debian/Redhat based), run it, and enable autostart" \
+        "3" "Install Proxmox guest agent (Debian/Redhat based)" \
         "4" "Install Docker (Ubuntu)" \
         "5" "Deploy Portainer" \
         "6" "Update Portainer" \
