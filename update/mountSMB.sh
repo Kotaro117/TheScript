@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="0.11.1"
+VERSION="0.12.0"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -30,6 +30,7 @@ function check_mount() {
     fi
 }
 
+
 ###############################
 ### BEGINNING OF THE SCRIPT ###
 ###############################
@@ -44,19 +45,31 @@ echo "Script is executed by $USER" >> $log
 groups | grep -q '\bsudo\b' && echo "User has sudo permissions" >> $log || echo "User does not have sudo permissions" >> $log
 
 # Check if cifs-utils is installed
-if ! command -v mount.cifs &> /dev/null
+if command -v apt $> /dev/null # Check if apt as a package manager is present
 then
-    echo -e "${YELLOW}cifs-utils is not installed. $TIME_STAMP ${NC}"
-    read -p "Do you want to install it? (y/n): " install_cifs
-    if [ "$install_cifs" == "y" ]
+    echo "apt as a package manager is present" >> $log
+    if ! command -v mount.cifs &> /dev/null
     then
-        sudo apt-get update
-        sudo apt-get install -y cifs-utils
+        echo -e "${YELLOW}cifs-utils is not installed. $TIME_STAMP ${NC}"
+        echo "cifs-utils is not installed" >> $log
+        read -p "Do you want to install it? (y/n): " install_cifs
+        if [ "$install_cifs" == "y" ]
+        then
+            echo "User has chosen to install cifs-utils" >> $log
+            sudo apt-get update
+            sudo apt-get install -y cifs-utils
+        else
+            echo "User has chosen not to install cifs-utils" >> $log
+            echo -e "${RED}Aborting, cifs-utils is required to mount SMB shares. $TIME_STAMP ${NC}"
+            echo "ERROR cifs-utils is required to mount SMB shares." >> $log
+            exit 1
+        fi
     else
-        echo -e "${RED}Aborting, cifs-utils is required to mount SMB shares. $TIME_STAMP ${NC}"
-        echo "ERROR cifs-utils is required to mount SMB shares." >> $log
-        exit 1
+        echo "cifs-utils is already installed" >> $log
     fi
+else
+    echo "apt as a package manager is not present" >> $log
+    echo "Script will not check whether cifs-utils is installed" >> $log
 fi
 
 # Prompt user for SMB share details
