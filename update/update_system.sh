@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="2.9.2"
+VERSION="2.9.3"
 RELEASE_FILE="/etc/os-release"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -76,7 +76,7 @@ then
     exit_code
 else
     # OS is not Fedora, print an error message
-    echo "The host is not based on Fedroa" >> $log
+    echo "The host is not based on Fedora" >> $log
 fi
 
 # Check if the 'snap' command is available
