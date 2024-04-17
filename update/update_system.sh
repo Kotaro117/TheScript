@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="2.9.1"
+VERSION="2.9.2"
 RELEASE_FILE="/etc/os-release"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -70,9 +70,9 @@ fi
 if [ -f /etc/fedora-release ]
 then
     # OS is Fedora, proceed to update
-    echo "The host is based on Fedroa" >> $log
+    echo "The host is based on Fedora" >> $log
     COMMAND="Fedora system"      
-    sudo dnf upgrade
+    sudo dnf upgrade -y
     exit_code
 else
     # OS is not Fedora, print an error message
