@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="1.3.3"
+VERSION="1.3.4"
 PACKAGE_NAME="qemu-guest-agent"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -47,7 +47,7 @@ groups | grep -q '\bsudo\b' && echo "User has sudo permissions" >> $log || echo 
 
 # Install Proxmox guest agent
 COMMAND="Installation of the Proxmox guest agent"
-if  dpkg -s "$PACKAGE_NAME" | grep "Status: install ok installed"               # Checks if the guest agent is installed 
+if  dpkg -s "$PACKAGE_NAME" &> /dev/null || yum list installed | grep -q "$PACKAGE_NAME" &> /dev/null             # Checks if the guest agent is installed 
 then
     echo -e "${YELLOW}$PACKAGE_NAME is already installed ${NC}"
     echo "$PACKAGE_NAME is already installed" >> $log
