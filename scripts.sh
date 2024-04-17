@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="0.12.5"
+VERSION="0.13.0"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -137,20 +137,8 @@ function advancedMenu() {
             echo "Install Docker has been choosen" >> $log
             SCRIPT=install_docker.sh
             SCRIPT_TYPE="install"
-            if command -v docker
-            then
-                whiptail --title "Install Docker" --msgbox "Docker is allready installed" 8 60
-                echo -e "${YELLOW}Docker is allready installed $TIME_STAMP ${NC}"
-                echo "Docker is allready installed" >> $log
-                if [ ! -f $SCRIPT_TYPE/docker_groupAdd.sh ]
-                then
-                    wget -O "$SCRIPT_TYPE/docker_groupAdd.sh" https://raw.githubusercontent.com/Kotaro117/TheScript/main/install/docker_groupAdd.sh && chmod +x $SCRIPT_TYPE/docker_groupAdd.sh
-                fi
-                $SCRIPT_TYPE/./docker_groupAdd.sh
-            else
-                download
-                whiptail --title "Docker install" --msgbox "Docker installed successfully" 8 40
-            fi
+            download
+            whiptail --title "Docker install" --msgbox "Docker installed successfully" 8 40
             ;;
         5)
             echo -e "${YELLOW}Deploying Portainer $TIME_STAMP ${NC}"
