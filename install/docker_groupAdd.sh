@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="3.4.0"
+VERSION="3.4.1"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -24,14 +24,6 @@ function exit_code() {
     then
         echo -e "${GREEN}User <$USER> has been added to the Docker group. Please log out and log back in for the changes to take effect ${NC}"
         echo "User <$USER> has been added to the Docker group. Please log out and log back in for the changes to take effect" >> $log
-        read -p "Do you want to log out? (y/n): " log_out
-        if [ "$log_out" == "y" ]
-        then
-            echo "User has chosen to log out" >> $log
-            gnome-session-quit --logout --no-prompt
-        else
-            echo "User has chosen not to log out" >> $log
-        fi
     else
         echo -e "${RED}User <$USER> has NOT been added to the Docker group. ${NC}"
         echo "User <$USER> has NOT been added to the Docker group." >> $log
