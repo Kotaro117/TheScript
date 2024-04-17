@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="0.12.4"
+VERSION="0.12.5"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -125,7 +125,7 @@ function advancedMenu() {
             whiptail --title "CA store update" --msgbox "CA certificate store has been updated successfully" 8 50
             ;;
         3)
-            echo -e "${YELLOW}Installing Proxmox guest agent (Debian) and enabling autostart $TIME_STAMP ${NC}"
+            echo -e "${YELLOW}Installing Proxmox guest agent and enabling autostart $TIME_STAMP ${NC}"
             echo "Install Proxmox guest agent has been choosen" >> $log
             SCRIPT=install_proxmoxGuestAgent.sh
             SCRIPT_TYPE="install"
