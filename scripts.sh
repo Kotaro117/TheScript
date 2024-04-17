@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="0.13.0"
+VERSION="0.13.1"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -98,14 +98,14 @@ function advancedMenu() {
         "1" "Update your system" \
         "2" "Update CA certificate store" \
         "3" "Install Proxmox guest agent (Debian/Redhat based)" \
-        "4" "Install Docker (Ubuntu)" \
+        "4" "Install Docker" \
         "5" "Deploy Portainer" \
         "6" "Update Portainer" \
         "7" "Setup Webmin repos and install it (Debian)" \
         "8" "Mount a SMB drive" \
         "9" "Delete this script" \
         "10" "Update this script" \
-        "11" "Install flatpak" 3>&1 1>&2 2>&3)
+        "11" "Install flatpak (Ubuntu)" 3>&1 1>&2 2>&3)
 
     case $ADVSEL in
         1)
