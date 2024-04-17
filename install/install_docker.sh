@@ -44,7 +44,7 @@ function fedora_install() {
     sudo dnf remove -y docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-selinux docker-engine-selinux docker-engine
     # Set up the repository
     echo "Setting up the repository" >> $log
-    sudo dnf -y install dnf-plugins-core
+    sudo dnf install -y dnf-plugins-core
     sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
     # Install Docker Engine (latest)
     echo "Installing Docker Engine (latest)" >> $log
