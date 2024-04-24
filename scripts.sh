@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="0.13.2"
+VERSION="0.14.0"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -217,13 +217,52 @@ function advancedMenu() {
     esac
 }
 
-function check_dependency_apt() {                                                   # Check for dependencies
+function check_package-manager() {
+    # Check for apt
+    if command -v apt >/dev/null 2>&1
+    then
+        echo "apt package manager is available" >> $log
+        package_manager=apt
+        sudo apt-get update
+    # If apt is not present, check for dnf
+    else
+        if command -v dnf >/dev/null 2>&1
+        then
+            echo "dnf package manager is available" >> $log
+            package_manager=dnf
+        else
+            echo "Neither apt nor dnf package manager is available" >> $log
+        fi
+    fi
+}
+
+function check_dependency_whiptail_dnf() {
+    if whiptail --version >/dev/null 2>&1
+    then
+        echo "whiptail is installed" >> $log
+    else
+        echo "whiptail is not installed" >> $log
+        echo -e "${RED}Whiptail is required but not installed. Would you like to install it? $TIME_STAMP ${NC}"
+        read -p "Install Whiptail? (y/n): " answer
+        if [ "$answer" == "y" ] 
+        then
+            sudo $package_manager install -y newt
+            echo "User has chosen to install Whiptail" >> $log
+        else
+            echo -e "${RED}Aborting, you haven chosen not to install Whiptail $TIME_STAMP ${NC}"
+            echo "User has chosen not to install Whiptail" >> $log
+            exit 1
+        fi
+    fi
+}
+
+function check_dependency() {                                                   # Check for dependencies
     command -v $1 >/dev/null 2>&1 || {
         echo -e "${RED}$1 is required but not installed. Would you like to install it? $TIME_STAMP ${NC}"
         read -p "Install $1? (y/n): " answer
         if [ "$answer" == "y" ] 
         then
-            sudo apt-get update && sudo apt-get install -y $1
+            sudo $package_manager install -y $1
         else
             echo "Aborting"
             exit 1
@@ -259,9 +298,11 @@ echo "$TIME_STAMP Running Version $VERSION of the script" >> $log
 echo "Scripts is executed by $USER" >> $log
 groups | grep -q '\bsudo\b' && echo "User has sudo permissions" >> $log || echo "User does not have sudo permissions" >> $log
 
+
+check_package-manager                                                           # Checks whether apt or dnf is installed
 check_sudo                                                                      # needed if the script is running inside a Docker container
-#check_dependency_apt curl                                                          # only needed when the new update function works
-check_dependency_apt wget                                                           # needed to download the scripts from GitHub
+#check_dependency curl                                                          # only needed when the new update function works
+check_dependency wget                                                           # needed to download the scripts from GitHub
 update_script_old
-check_dependency_apt whiptail                                                       # needed for the script GUI
+check_dependency whiptail                                                       # needed for the script GUI
 advancedMenu
