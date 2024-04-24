@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="2.11.0"
+VERSION="2.12.0"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -94,6 +94,22 @@ function deploy_portainer() {
     fi
 }
 
+function docker_group(){
+    echo -e "${YELLOW}Do you want to add $USER to the Docker group? (y/n): ${NC}"
+    read -p answer
+    if [ "$answer" == "y" ]
+    then
+        echo "User has chosen to add $USER to the docker group" >> $log
+        if [ ! -f $INSATALL_PATH/docker_groupAdd.sh ]
+        then
+            wget -O "$INSATALL_PATH/docker_groupAdd.sh" https://raw.githubusercontent.com/Kotaro117/TheScript/main/install/docker_groupAdd.sh && chmod +x $INSATALL_PATH/docker_groupAdd.sh
+        fi
+        $INSATALL_PATH/./docker_groupAdd.sh
+    else
+        echo "User has chosen NOT to add $USER to the docker group" >> $log
+    fi
+}
+
 
 ###############################
 ### Beginning of the script ###
@@ -108,18 +124,13 @@ echo "$TIME_STAMP running Version $VERSION of the script" >> $log
 echo "Scripts is executed by $USER" >> $log
 groups | grep -q '\bsudo\b' && echo "User has sudo permissions" >> $log || echo "User does not have sudo permissions" >> $log
 
-if [ ! -f $INSATALL_PATH/docker_groupAdd.sh ]
-then
-    wget -O "$INSATALL_PATH/docker_groupAdd.sh" https://raw.githubusercontent.com/Kotaro117/TheScript/main/install/docker_groupAdd.sh && chmod +x $INSATALL_PATH/docker_groupAdd.sh
-fi
-
 if command -v docker
 then
     echo -e "${YELLOW} Docker is allready installed $TIME_STAMP ${NC}"
     echo "Docker is allready installed" >> $log
     deploy_portainer
     # Add user to the Docker group
-    $INSATALL_PATH/./docker_groupAdd.sh
+    docker_group
     exit 1
 fi
 
@@ -135,4 +146,4 @@ fi
 deploy_portainer
 
 # Add user to the Docker group
-$INSATALL_PATH/./docker_groupAdd.sh
+docker_group
