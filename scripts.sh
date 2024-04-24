@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="0.13.1"
+VERSION="0.13.2"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -42,8 +42,8 @@ function update_script_new() {
             else
                 echo -e "${RED}Error downloading the update $TIME_STAMP ${NC}"                                    
             fi                                                      
-        else                                                                               # "no" has been choosen
-            echo -e "${YELLOW}User has choosen not to update the script $TIME_STAMP ${NC}"
+        else                                                                               # "no" has been chosen
+            echo -e "${YELLOW}User has chosen not to update the script $TIME_STAMP ${NC}"
             whiptail --title "Script update" --msgbox "Script has not been updated, you are still on Version $VERSION" 10 60
         fi
     fi
@@ -62,7 +62,7 @@ function update_script_old() {
         else                                                                    # Version is different
             echo "An update has been found" >> $log
             whiptail --title "Script update" --yesno "An update has been found, you are on Version $VERSION. Do you want to update this script?" 10 60
-            if [ $? -eq 0 ]                                                     # "yes" has been choosen
+            if [ $? -eq 0 ]                                                     # "yes" has been chosen
             then
                 chmod +x scripts.sh.update                                      # make the script executeable
                 echo "Updating the script" >> $log
@@ -71,8 +71,8 @@ function update_script_old() {
                 whiptail --title "Script update" --msgbox "Script has been updated successfully" 10 60
                 echo "Script has been updated successfully" >> $log
                 exec ./scripts.sh                                               # exits current scripts and run updated version
-            else                                                                # "no" has been choosen
-                echo "User has choosen not to update the script" >> $log
+            else                                                                # "no" has been chosen
+                echo "User has chosen not to update the script" >> $log
                 rm scripts.sh.update
                 whiptail --title "Script update" --msgbox "Script has not been updated, you are still on Version $VERSION" 10 60
             fi
@@ -84,10 +84,13 @@ function update_script_old() {
 }
 
 function download() {
-    mkdir -p $SCRIPT_TYPE                   # creates the necessary folder if it's not allready present
+    mkdir -p $SCRIPT_TYPE                   # creates the necessary folder if it's not already present
     if [ ! -f $SCRIPT_TYPE/$SCRIPT ]        # checks if the script is not present  
     then
         wget -O "$SCRIPT_TYPE/$SCRIPT" https://raw.githubusercontent.com/Kotaro117/TheScript/main/$SCRIPT_TYPE/$SCRIPT && chmod +x $SCRIPT_TYPE/$SCRIPT
+        echo "$SCRIPT has been downloaded" >> $log
+    else
+        echo "$SCRIPT is already present" >> $log
     fi
     $SCRIPT_TYPE/./$SCRIPT
 }
@@ -110,7 +113,7 @@ function advancedMenu() {
     case $ADVSEL in
         1)
             echo -e "${YELLOW}Updating system $TIME_STAMP ${NC}"
-            echo "System update has been choosen" >> $log
+            echo "System update has been chosen" >> $log
             SCRIPT=update_system.sh
             SCRIPT_TYPE="update"
             download
@@ -118,7 +121,7 @@ function advancedMenu() {
             ;;
         2)
             echo -e "${YELLOW}Updating CA certificate store $TIME_STAMP ${NC}"
-            echo "Update CA store has been choosen" >> $log
+            echo "Update CA store has been chosen" >> $log
             SCRIPT=update_ca-cert-store.sh
             SCRIPT_TYPE="update"
             download
@@ -126,7 +129,7 @@ function advancedMenu() {
             ;;
         3)
             echo -e "${YELLOW}Installing Proxmox guest agent and enabling autostart $TIME_STAMP ${NC}"
-            echo "Install Proxmox guest agent has been choosen" >> $log
+            echo "Install Proxmox guest agent has been chosen" >> $log
             SCRIPT=install_proxmoxGuestAgent.sh
             SCRIPT_TYPE="install"
             download
@@ -134,7 +137,7 @@ function advancedMenu() {
             ;;
         4)
             echo -e "${YELLOW}Installing Docker $TIME_STAMP ${NC}"
-            echo "Install Docker has been choosen" >> $log
+            echo "Install Docker has been chosen" >> $log
             SCRIPT=install_docker.sh
             SCRIPT_TYPE="install"
             download
@@ -142,7 +145,7 @@ function advancedMenu() {
             ;;
         5)
             echo -e "${YELLOW}Deploying Portainer $TIME_STAMP ${NC}"
-            echo "Deploy Portainer has been choosen" >> $log
+            echo "Deploy Portainer has been chosen" >> $log
             SCRIPT=deploy_portainer.sh
             SCRIPT_TYPE="install"
             download
@@ -150,7 +153,7 @@ function advancedMenu() {
             ;;
         6)
             echo -e "${YELLOW}Updating Portainer $TIME_STAMP ${NC}"
-            echo "Update Portainer has been choosen" >> $log
+            echo "Update Portainer has been chosen" >> $log
             SCRIPT=update_portainer.sh
             SCRIPT_TYPE="update"
             download
@@ -158,7 +161,7 @@ function advancedMenu() {
             ;;
         7)
             echo -e "${YELLOW}Installing Webmin $TIME_STAMP ${NC}"
-            echo "Install Webmin has been choosen" >> $log
+            echo "Install Webmin has been chosen" >> $log
             SCRIPT=install_webmin.sh
             SCRIPT_TYPE="install"
             download
@@ -166,7 +169,7 @@ function advancedMenu() {
             ;;
         8)  
             echo -e "${YELLOW}Mounting smb drive $TIME_STAMP ${NC}"
-            echo "Mounting smb drive has been choosen" >> $log
+            echo "Mounting smb drive has been chosen" >> $log
             SCRIPT=mountSMB.sh
             SCRIPT_TYPE="update"
             download
@@ -174,11 +177,11 @@ function advancedMenu() {
             ;;
         9)  
             whiptail --title "Delete Script" --yesno "Are you sure you want to delete everything?" 10 60
-            echo "Delete script has been choosen" >> $log
+            echo "Delete script has been chosen" >> $log
             if [ $? -eq 0 ]
             then
                 echo -e "${RED}Deleting everything $TIME_STAMP ${NC}"
-                echo "yes has been choosen" >> $log
+                echo "yes has been chosen" >> $log
                 rm -R update/ install/ scripts.sh
                 echo -e "${GREEN}All files have been deleted $TIME_STAMP ${NC}"
                 echo "All files have been deleted" >> $log
@@ -202,7 +205,7 @@ function advancedMenu() {
             ;;
         11)
             echo -e "${YELLOW}Installing flatpak $TIME_STAMP ${NC}"
-            echo "Install flatpak has been choosen" >> $log
+            echo "Install flatpak has been chosen" >> $log
             SCRIPT=install_flatpak.sh
             SCRIPT_TYPE="install"
             download
@@ -214,7 +217,7 @@ function advancedMenu() {
     esac
 }
 
-function check_dependency() {                                                   # Check for dependencies
+function check_dependency_apt() {                                                   # Check for dependencies
     command -v $1 >/dev/null 2>&1 || {
         echo -e "${RED}$1 is required but not installed. Would you like to install it? $TIME_STAMP ${NC}"
         read -p "Install $1? (y/n): " answer
@@ -228,7 +231,7 @@ function check_dependency() {                                                   
     }
 }
 
-function check_sudo() {                                                         # Check for sudo (if used inside a docker container)
+function check_sudo_apt() {                                                         # Check for sudo (if used inside a docker container)
     command -v sudo >/dev/null 2>&1 || {
         echo -e "${RED}sudo is required but not installed. Would you like to install it? $TIME_STAMP ${NC}"
         read -p "Install sudo? (y/n): " answer
@@ -257,8 +260,8 @@ echo "Scripts is executed by $USER" >> $log
 groups | grep -q '\bsudo\b' && echo "User has sudo permissions" >> $log || echo "User does not have sudo permissions" >> $log
 
 check_sudo                                                                      # needed if the script is running inside a Docker container
-#check_dependency curl                                                          # only needed when the new update function works
-check_dependency wget                                                           # needed to download the scripts from GitHub
+#check_dependency_apt curl                                                          # only needed when the new update function works
+check_dependency_apt wget                                                           # needed to download the scripts from GitHub
 update_script_old
-check_dependency whiptail                                                       # needed for the script GUI
+check_dependency_apt whiptail                                                       # needed for the script GUI
 advancedMenu
