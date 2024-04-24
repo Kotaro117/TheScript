@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="2.12.1"
+VERSION="2.12.2"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -124,6 +124,7 @@ echo "" >> $log # add a new line to make it easier to read
 
 echo -e "${YELLOW}running Version $VERSION of the script $TIME_STAMP ${NC}"
 echo "$TIME_STAMP running Version $VERSION of the script" >> $log
+sleep 5
 
 echo "Scripts is executed by $USER" >> $log
 groups | grep -q '\bsudo\b' && echo "User has sudo permissions" >> $log || echo "User does not have sudo permissions" >> $log
