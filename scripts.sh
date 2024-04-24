@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="0.14.0"
+VERSION="0.14.1"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -223,7 +223,6 @@ function check_package-manager() {
     then
         echo "apt package manager is available" >> $log
         package_manager=apt
-        sudo apt-get update
     # If apt is not present, check for dnf
     else
         if command -v dnf >/dev/null 2>&1
@@ -236,7 +235,7 @@ function check_package-manager() {
     fi
 }
 
-function check_dependency_whiptail_dnf() {
+function check_dependency_whiptail() {
     if whiptail --version >/dev/null 2>&1
     then
         echo "whiptail is installed" >> $log
@@ -246,8 +245,14 @@ function check_dependency_whiptail_dnf() {
         read -p "Install Whiptail? (y/n): " answer
         if [ "$answer" == "y" ] 
         then
-            sudo $package_manager install -y newt
-            echo "User has chosen to install Whiptail" >> $log
+            if [ "$package_manager" == "dnf" ]
+            then
+                sudo $package_manager install -y newt
+                echo "User has chosen to install Whiptail" >> $log
+            else
+                sudo $package_manager install -y whiptail
+                echo "User has chosen to install Whiptail" >> $log
+            fi
         else
             echo -e "${RED}Aborting, you haven chosen not to install Whiptail $TIME_STAMP ${NC}"
             echo "User has chosen not to install Whiptail" >> $log
@@ -256,12 +261,16 @@ function check_dependency_whiptail_dnf() {
     fi
 }
 
-function check_dependency() {                                                   # Check for dependencies
+function check_dependency() {                                                       # Check for dependencies
     command -v $1 >/dev/null 2>&1 || {
         echo -e "${RED}$1 is required but not installed. Would you like to install it? $TIME_STAMP ${NC}"
         read -p "Install $1? (y/n): " answer
         if [ "$answer" == "y" ] 
         then
+            if [ "$package_manager" == "apt"]
+            then 
+                sudo apt update
+            fi
             sudo $package_manager install -y $1
         else
             echo "Aborting"
@@ -304,5 +313,5 @@ check_sudo                                                                      
 #check_dependency curl                                                          # only needed when the new update function works
 check_dependency wget                                                           # needed to download the scripts from GitHub
 update_script_old
-check_dependency whiptail                                                       # needed for the script GUI
+check_dependency_whiptail                                                       # needed for the script GUI
 advancedMenu
