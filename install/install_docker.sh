@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="2.12.2"
+VERSION="2.12.3"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -99,8 +99,8 @@ function deploy_portainer() {
 }
 
 function docker_group(){
-    echo -e "${YELLOW}Do you want to add $USER to the Docker group? (y/n): ${NC}"
-    read -p answer
+    echo -e "${YELLOW}Do you want to add $USER to the Docker group?${NC}"
+    read -rp "Add $USER (y/n): " answer
     if [ "$answer" == "y" ]
     then
         echo "User has chosen to add $USER to the docker group" >> $log
