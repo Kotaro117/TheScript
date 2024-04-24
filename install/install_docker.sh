@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="2.12.0"
+VERSION="2.12.1"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
 RED='\033[0;31m'
@@ -52,6 +52,10 @@ function fedora_install() {
     # Start Docker
     echo "Starting Docker" >> $log
     sudo systemctl start docker
+    # enable autostart for Docker (systemd)
+    echo "Enabling autostart for Docker" >> $log
+    sudo systemctl enable docker.service
+    sudo systemctl enable containerd.service
 }
 
 function ubuntu_install() {
