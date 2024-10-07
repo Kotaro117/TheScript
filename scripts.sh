@@ -5,7 +5,7 @@
 ### Variable section ###
 ########################
 
-VERSION="0.14.1"
+VERSION="0.14.2"
 SCRIPT_URL="https://raw.githubusercontent.com/Kotaro117/TheScript/main/scripts.sh"
 TIME_STAMP=$(date +"%d/%m/%Y %H:%M:%S")
 # Define colour codes
@@ -312,6 +312,5 @@ check_package-manager                                                           
 check_sudo                                                                      # needed if the script is running inside a Docker container
 #check_dependency curl                                                          # only needed when the new update function works
 check_dependency wget                                                           # needed to download the scripts from GitHub
-update_script_old
 check_dependency_whiptail                                                       # needed for the script GUI
 advancedMenu
